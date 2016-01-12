@@ -2,4 +2,4 @@
 C++ GameEngine
 
 # License
-see LICENSE.txt
+see LICENSE file
