@@ -8,16 +8,13 @@ namespace mkyu {
 
 template<int N>
 struct PolygonContainer {
-    template<typename ... Types>
-    void emplace_back(Types ... args) {
-        m_objects.emplace_back(args ...);
-    }
-    void push_back(T const& t) {
-        m_objects.push_back(t);
+
+    void add(mkyu::Polygon<N> const& poly) {
+        m_objects.push_back(poly);
     }
     void draw() const {
         for (auto&& e : m_objects)
-            e.draw_impl();
+            e.draw();
     }
     template<typename F>
     void for_each(F const& f) const {
