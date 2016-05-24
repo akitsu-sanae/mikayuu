@@ -9,9 +9,25 @@ namespace mkyu {
 
 template<int N>
 struct Polygon {
+    enum class BlendMode {
+        None,
+        Alpha,
+        Reverse,
+        Add,
+        Screen,
+        Mult
+    };
+
     std::array<vecd<2>, N> position = {};
     Color color = {};
+    BlendMode blend_mode = BlendMode::None;
+
+    BlendMode blend() const { return blend_mode; }
+    void blend(BlendMode mode) { blend_mode = mode; }
     void draw() const;
+
+    void do_blend() const;
+
 };
 
 }
