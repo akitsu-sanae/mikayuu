@@ -27,10 +27,17 @@ mkyu::Game::Game(mkyu::Game::Option const& option) {
 
 
 int mkyu::Game::update() {
+    on_update();
+    draw();
     glfwSwapBuffers(m_window);
     glfwPollEvents();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     return !glfwWindowShouldClose(m_window);
+}
+
+void mkyu::Game::draw() const {
+    for (auto const& o: m_drawable_objects)
+        o->draw();
 }
 
 mkyu::Game::~Game()  {
@@ -38,4 +45,9 @@ mkyu::Game::~Game()  {
 
     mkyu::detail::Keyboard::terminate();
 }
+
+void mkyu::Game::add_drawable_object(std::shared_ptr<mkyu::DrawableObject> const& object) {
+    m_drawable_objects.push_back(object);
+}
+
 
