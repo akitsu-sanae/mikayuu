@@ -3,42 +3,37 @@
 #include <GLFW/glfw3.h>
 
 #include <mikayuu/core.hpp>
-#include <mikayuu/blend.hpp>
 #include <mikayuu/keyboard.hpp>
 
-using namespace mkyu;
-
-static GLFWwindow* window = nullptr;
-
-void mkyu::initialize(Option const& option) {
+mkyu::Game::Game(mkyu::Game::Option const& option) {
 
     mkyu::detail::Keyboard::initialize();
 
     glfwInit();
-    window = glfwCreateWindow(
+    m_window =  glfwCreateWindow(
             option.width, option.height,
             option.title,
-            nullptr, nullptr);
-    if (!window) {
+            nullptr, nullptr
+            );
+    if (!m_window) {
         glfwTerminate();
         exit(1);
     }
-    glfwMakeContextCurrent(window);
-
-    glfwSetKeyCallback(window, detail::keyboard_callback);
+    glfwMakeContextCurrent(m_window);
+    glfwSetKeyCallback(m_window, detail::keyboard_callback);
 
     glClearColor(0.0, 0.0, 0.0, 1.0);
 }
 
-int mkyu::update() {
-    glfwSwapBuffers(window);
+
+int mkyu::Game::update() {
+    glfwSwapBuffers(m_window);
     glfwPollEvents();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    mkyu::detail::do_blend();
-    return !glfwWindowShouldClose(window);
+    return !glfwWindowShouldClose(m_window);
 }
 
-void mkyu::terminate()  {
+mkyu::Game::~Game()  {
     glfwTerminate();
 
     mkyu::detail::Keyboard::terminate();
