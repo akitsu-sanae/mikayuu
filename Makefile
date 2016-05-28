@@ -4,7 +4,6 @@ AR = ar
 CXXFLAGS = -Wall -Wextra -std=c++14 -s -O2
 ARFLAGS = rv
 
-LDFLAGS = -L/mingw64/lib
 LIBS = -lglfw3 -lopengl32 -lglu32 -lpng
 INCLUDE = -I.
 
@@ -24,7 +23,7 @@ $(TARGET): $(OBJ)
 
 
 $(BUILD_DIR)/obj/%.o: $(SRCDIR)/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDE)  -o $@ -c $<
+	$(CXX) $(CXXFLAGS) $(INCLUDE)  $(LIBS) -o $@ -c $<
 
 
 .PHONY: clean
