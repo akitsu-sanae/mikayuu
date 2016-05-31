@@ -9,6 +9,8 @@
 
 namespace mkyu {
 
+struct Scene;
+
 struct Game {
     struct Option {
         int width = 640;
@@ -21,13 +23,15 @@ struct Game {
     virtual ~Game();
 
     int update();
+
+    void change_scene(std::shared_ptr<mkyu::Scene> const&);
 protected:
     virtual void on_update() = 0;
-    void add_drawable_object(std::shared_ptr<DrawableObject> const&);
 private:
-    void draw() const;
     GLFWwindow* m_window = nullptr;
-    std::vector<std::shared_ptr<mkyu::DrawableObject>> m_drawable_objects;
+
+    std::shared_ptr<Scene> m_current_scene;
+    std::shared_ptr<Scene> m_next_scene;
 };
 
 }

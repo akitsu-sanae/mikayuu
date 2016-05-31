@@ -3,10 +3,10 @@
 #include <GLFW/glfw3.h>
 
 #include <mikayuu/core.hpp>
+#include <mikayuu/scene.hpp>
 #include <mikayuu/keyboard.hpp>
 
 mkyu::Game::Game(mkyu::Game::Option const& option) {
-
     mkyu::detail::Keyboard::initialize();
 
     glfwInit();
@@ -28,16 +28,21 @@ mkyu::Game::Game(mkyu::Game::Option const& option) {
 
 int mkyu::Game::update() {
     on_update();
-    draw();
+
+    if (m_current_scene)
+        m_current_scene->update();
+
+    if (m_current_scene != m_next_scene)
+        m_current_scene = m_next_scene;
+
     glfwSwapBuffers(m_window);
     glfwPollEvents();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     return !glfwWindowShouldClose(m_window);
 }
 
-void mkyu::Game::draw() const {
-    for (auto const& o: m_drawable_objects)
-        o->draw();
+void mkyu::Game::change_scene(std::shared_ptr<mkyu::Scene> const& scene) {
+    m_next_scene = scene;
 }
 
 mkyu::Game::~Game()  {
@@ -46,8 +51,5 @@ mkyu::Game::~Game()  {
     mkyu::detail::Keyboard::terminate();
 }
 
-void mkyu::Game::add_drawable_object(std::shared_ptr<mkyu::DrawableObject> const& object) {
-    m_drawable_objects.push_back(object);
-}
 
 
