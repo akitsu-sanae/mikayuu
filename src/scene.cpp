@@ -1,21 +1,15 @@
 #include <mikayuu/scene.hpp>
 #include <mikayuu/core.hpp>
-#include <mikayuu/drawable_object.hpp>
-
+#include <mikayuu/layer.hpp>
 
 void mkyu::Scene::update() {
     on_update();
-    draw();
+
+    for (auto&& l : m_layers)
+        l->update();
 }
 
-void mkyu::Scene::add_drawable_object(std::shared_ptr<DrawableObject> const& obj) {
-    m_drawable_objects.push_back(obj);
+void mkyu::Scene::add_layer(std::shared_ptr<mkyu::Layer> const& layer) {
+    m_layers.push_back(layer);
 }
-
-void mkyu::Scene::draw() const {
-    for (auto&& e : m_drawable_objects)
-        e->draw();
-}
-
-
 

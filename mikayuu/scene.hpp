@@ -8,23 +8,25 @@
 namespace mkyu {
 
 struct Game;
-struct DrawableObject;
+struct Layer;
 
 struct Scene {
-    Scene(std::shared_ptr<mkyu::Game> const& p) :
+    Scene(mkyu::Game const& p) :
         m_parent(p)
     {}
     virtual ~Scene() {}
 
     void update();
+
+    std::vector<std::shared_ptr<mkyu::Layer>> const& layers() const {
+        return m_layers;
+    }
 protected:
     virtual void on_update() = 0;
-    void add_drawable_object(std::shared_ptr<DrawableObject> const&);
+    void add_layer(std::shared_ptr<mkyu::Layer> const&);
 private:
-    void draw() const;
-
-    std::vector<std::shared_ptr<mkyu::DrawableObject>> m_drawable_objects;
-    std::shared_ptr<mkyu::Game> m_parent;
+    std::vector<std::shared_ptr<mkyu::Layer>> m_layers;
+    mkyu::Game const& m_parent;
 };
 
 }
