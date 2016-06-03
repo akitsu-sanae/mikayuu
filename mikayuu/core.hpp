@@ -6,6 +6,7 @@
 #include <memory>
 #include <vector>
 #include <mikayuu/drawable_object.hpp>
+#include <mikayuu/keyboard.hpp>
 
 namespace mkyu {
 
@@ -27,8 +28,13 @@ struct Game {
     void change_scene(std::shared_ptr<mkyu::Scene> const&);
 protected:
     virtual void on_update() = 0;
+
+    mkyu::Keyboard const& keyboard() const {
+        return m_keyboard;
+    }
 private:
     GLFWwindow* m_window = nullptr;
+    mkyu::Keyboard m_keyboard;
 
     std::shared_ptr<Scene> m_current_scene;
     std::shared_ptr<Scene> m_next_scene;

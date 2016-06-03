@@ -7,7 +7,6 @@
 #include <mikayuu/keyboard.hpp>
 
 mkyu::Game::Game(mkyu::Game::Option const& option) {
-    mkyu::detail::Keyboard::initialize();
 
     glfwInit();
     m_window =  glfwCreateWindow(
@@ -20,7 +19,7 @@ mkyu::Game::Game(mkyu::Game::Option const& option) {
         exit(1);
     }
     glfwMakeContextCurrent(m_window);
-    glfwSetKeyCallback(m_window, detail::keyboard_callback);
+    glfwSetKeyCallback(m_window, keyboard_detail::callback_impl);
 
     glClearColor(0.0, 0.0, 0.0, 1.0);
 }
@@ -47,8 +46,6 @@ void mkyu::Game::change_scene(std::shared_ptr<mkyu::Scene> const& scene) {
 
 mkyu::Game::~Game()  {
     glfwTerminate();
-
-    mkyu::detail::Keyboard::terminate();
 }
 
 
