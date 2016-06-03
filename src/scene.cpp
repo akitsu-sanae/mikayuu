@@ -1,5 +1,5 @@
 #include <mikayuu/scene.hpp>
-#include <mikayuu/core.hpp>
+#include <mikayuu/game.hpp>
 #include <mikayuu/layer.hpp>
 
 void mkyu::Scene::update() {
