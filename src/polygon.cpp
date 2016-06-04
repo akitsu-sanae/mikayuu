@@ -1,4 +1,4 @@
-#include <GLFw/glfw3.h>
+#include <GLFW/glfw3.h>
 #include <mikayuu/polygon.hpp>
 
 namespace mkyu {
