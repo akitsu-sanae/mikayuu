@@ -1,5 +1,5 @@
-#ifndef MIKAYUU_HPP
-#define MIKAYUU_HPP
+#ifndef MIKAYUU_GAME_HPP
+#define MIKAYUU_GAME_HPP
 
 #include <GLFW/glfw3.h>
 #include <mikayuu/utility.hpp>
@@ -40,9 +40,6 @@ private:
     std::shared_ptr<Scene> m_next_scene;
 };
 
-}
-
-
-
+} // namespace mkyu
 
 #endif
