@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <GLFW/glfw3.h>
 
-#include <mikayuu/core.hpp>
+#include <mikayuu/game.hpp>
 #include <mikayuu/scene.hpp>
 #include <mikayuu/keyboard.hpp>
 

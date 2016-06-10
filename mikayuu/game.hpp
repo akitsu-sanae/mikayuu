@@ -2,7 +2,6 @@
 #define MIKAYUU_GAME_HPP
 
 #include <GLFW/glfw3.h>
-#include <mikayuu/utility.hpp>
 #include <memory>
 #include <vector>
 #include <mikayuu/drawable_object.hpp>
