@@ -20,6 +20,10 @@ struct Layer {
     std::vector<std::shared_ptr<mkyu::DrawableObject>> const& objects() const {
         return m_drawable_objects;
     }
+
+    mkyu::Scene const& parent() const {
+        return m_parent;
+    }
 protected:
     virtual void on_update() = 0;
     void add_object(std::shared_ptr<DrawableObject> const&);

@@ -21,6 +21,10 @@ struct Scene {
     std::vector<std::shared_ptr<mkyu::Layer>> const& layers() const {
         return m_layers;
     }
+
+    mkyu::Game const& parent() const {
+        return m_parent;
+    }
 protected:
     virtual void on_update() = 0;
     void add_layer(std::shared_ptr<mkyu::Layer> const&);

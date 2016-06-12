@@ -25,12 +25,12 @@ struct Game {
     int update();
 
     void change_scene(std::shared_ptr<mkyu::Scene> const&);
-protected:
-    virtual void on_update() = 0;
 
     mkyu::Keyboard const& keyboard() const {
         return m_keyboard;
     }
+protected:
+    virtual void on_update() = 0;
 private:
     GLFWwindow* m_window = nullptr;
     mkyu::Keyboard m_keyboard;
