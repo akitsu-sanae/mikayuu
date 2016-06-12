@@ -2,7 +2,7 @@
 #define MIKAYUU_KEYBOARD_HPP
 
 #include <string>
-#include <array>
+#include <map>
 
 struct GLFWwindow;
 
@@ -33,13 +33,16 @@ struct Keyboard {
     };
 
     KeyState state(KeyType type) const {
-        return m_status.at(static_cast<int>(type));
+        auto found = m_status.find(type);
+        if (found == m_status.end())
+            return KeyState::Invalid;
+        return found->second;
     }
 
     explicit Keyboard();
     void callback(int, int);
 private:
-    std::array<KeyState, static_cast<int>(Keyboard::KeyType::Invalid)> m_status = {};
+    std::map<KeyType, KeyState> m_status = {};
 };
 
 namespace keyboard_detail {

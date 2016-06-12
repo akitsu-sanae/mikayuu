@@ -77,7 +77,7 @@ Keyboard::Keyboard() {
 void Keyboard::callback(int key_code, int action) {
     auto key = convert_key(key_code);
     auto state = convert_key_state(action);
-    m_status.at(static_cast<int>(key)) = state;
+    m_status[key] = state;
 }
 
 } // namespace mkyu
