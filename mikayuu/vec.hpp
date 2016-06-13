@@ -10,6 +10,26 @@ template<typename T>
 struct vec<T, 2> {
     T x = static_cast<T>(0.0);
     T y = static_cast<T>(0.0);
+
+    struct out_of_range_exception {};
+    T const& at(int i) const {
+        if (i == 0)
+            return x;
+        else if (i == 1)
+            return y;
+        else
+            throw out_of_range_exception{};
+    }
+
+    T& at(int i) {
+        if (i == 0)
+            return x;
+        else if (i == 1)
+            return y;
+        else
+            throw out_of_range_exception{};
+    }
+
 };
 
 template<typename T>
@@ -17,7 +37,43 @@ struct vec<T, 3> {
     T x = static_cast<T>(0.0);
     T y = static_cast<T>(0.0);
     T z = static_cast<T>(0.0);
+
+    struct out_of_range_exception {};
+    T const& at(int i) const {
+        switch (i) {
+        case 0:
+            return x;
+        case 1:
+            return y;
+        case 2:
+            return z;
+        default:
+            throw out_of_range_exception{};
+        }
+    }
+
+    T& at(int i) {
+        switch (i) {
+        case 0:
+            return x;
+        case 1:
+            return y;
+        case 2:
+            return z;
+        default:
+            throw out_of_range_exception{};
+        }
+    }
+
 };
+
+template<typename T, int N>
+inline static vec<T, N> operator+(vec<T, N> const& lhs, vec<T, N> const& rhs) {
+    vec<T, N> result = {};
+    for (int i=0; i<N; i++)
+        result.at(i) = lhs.at(i) + rhs.at(i);
+    return result;
+}
 
 template<int N>
 using vecd = vec<double, N>;
