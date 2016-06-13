@@ -19,11 +19,12 @@ struct Polygon : public mkyu::DrawableObject {
         Mult
     };
 
-    explicit Polygon(std::array<vec2d, N> const& position, Color const& c) :
-        position(position),
+    explicit Polygon(vec2d const& position, std::array<vec2d, N> const& nodes, Color const& c) :
+        DrawableObject(position),
+        nodes(nodes),
         color(c)
     {}
-    std::array<vecd<2>, N> position = {};
+    std::array<vecd<2>, N> nodes = {};
     Color color = {};
     BlendMode blend_mode = BlendMode::None;
 

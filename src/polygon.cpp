@@ -7,30 +7,39 @@ template<int N>
 void Polygon<N>::draw() const {
     do_blend();
     glColor4d(color.r/255.0, color.g/255.0, color.b/255.0, color.a/255.0);
+    glPushMatrix();
+    glTranslated(position.x, position.y, 0.0);
     glBegin(GL_POLYGON);
-    for (auto&& e : position)
+    for (auto&& e : nodes)
         glVertex2d(e.x, e.y);
     glEnd();
+    glPopMatrix();
 }
 
 template<>
 void Polygon<3>::draw() const {
     do_blend();
     glColor4d(color.r/255.0, color.g/255.0, color.b/255.0, color.a/255.0);
+    glPushMatrix();
+    glTranslated(position.x, position.y, 0.0);
     glBegin(GL_TRIANGLES);
-    for (auto&& e : position)
+    for (auto&& e : nodes)
         glVertex2d(e.x ,e.y);
     glEnd();
+    glPopMatrix();
 }
 
 template<>
 void Polygon<4>::draw() const {
     do_blend();
     glColor4d(color.r/255.0, color.g/255.0, color.b/255.0, color.a/255.0);
+    glPushMatrix();
+    glTranslated(position.x, position.y, 0.0);
     glBegin(GL_QUADS);
-    for (auto&& e : position)
+    for (auto&& e : nodes)
         glVertex2d(e.x, e.y);
     glEnd();
+    glPopMatrix();
 }
 
 template<int N>
