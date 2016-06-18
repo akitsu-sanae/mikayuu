@@ -11,60 +11,82 @@
 
 namespace mkyu {
 
-static Keyboard::KeyType convert_key(int key) {
+static Keyboard::Type convert_key(int key) {
     switch(key) {
     case GLFW_KEY_A:
-        return Keyboard::KeyType::A;
+        return Keyboard::Type::A;
     case GLFW_KEY_B:
-        return Keyboard::KeyType::B;
+        return Keyboard::Type::B;
     case GLFW_KEY_C:
-        return Keyboard::KeyType::C;
+        return Keyboard::Type::C;
     case GLFW_KEY_D:
-        return Keyboard::KeyType::D;
+        return Keyboard::Type::D;
     case GLFW_KEY_E:
-        return Keyboard::KeyType::E;
+        return Keyboard::Type::E;
     case GLFW_KEY_F:
-        return Keyboard::KeyType::F;
+        return Keyboard::Type::F;
     case GLFW_KEY_G:
-        return Keyboard::KeyType::G;
+        return Keyboard::Type::G;
     case GLFW_KEY_H:
-        return Keyboard::KeyType::H;
+        return Keyboard::Type::H;
     case GLFW_KEY_I:
-        return Keyboard::KeyType::I;
+        return Keyboard::Type::I;
     case GLFW_KEY_J:
-        return Keyboard::KeyType::J;
+        return Keyboard::Type::J;
     case GLFW_KEY_K:
-        return Keyboard::KeyType::K;
+        return Keyboard::Type::K;
     case GLFW_KEY_L:
-        return Keyboard::KeyType::L;
+        return Keyboard::Type::L;
     case GLFW_KEY_M:
-        return Keyboard::KeyType::M;
+        return Keyboard::Type::M;
+    case GLFW_KEY_N:
+        return Keyboard::Type::N;
+    case GLFW_KEY_O:
+        return Keyboard::Type::O;
+    case GLFW_KEY_P:
+        return Keyboard::Type::P;
+    case GLFW_KEY_Q:
+        return Keyboard::Type::Q;
+    case GLFW_KEY_R:
+        return Keyboard::Type::R;
+    case GLFW_KEY_S:
+        return Keyboard::Type::S;
+    case GLFW_KEY_T:
+        return Keyboard::Type::T;
+    case GLFW_KEY_U:
+        return Keyboard::Type::U;
+    case GLFW_KEY_V:
+        return Keyboard::Type::V;
+    case GLFW_KEY_W:
+        return Keyboard::Type::W;
     case GLFW_KEY_X:
-        return Keyboard::KeyType::X;
+        return Keyboard::Type::X;
+    case GLFW_KEY_Y:
+        return Keyboard::Type::Y;
     case GLFW_KEY_Z:
-        return Keyboard::KeyType::Z;
+        return Keyboard::Type::Z;
     case GLFW_KEY_UP:
-        return Keyboard::KeyType::Up;
+        return Keyboard::Type::Up;
     case GLFW_KEY_DOWN:
-        return Keyboard::KeyType::Down;
+        return Keyboard::Type::Down;
     case GLFW_KEY_LEFT:
-        return Keyboard::KeyType::Left;
+        return Keyboard::Type::Left;
     case GLFW_KEY_RIGHT:
-        return Keyboard::KeyType::Right;
+        return Keyboard::Type::Right;
     }
-    return Keyboard::KeyType::Invalid;
+    return Keyboard::Type::Invalid;
 }
 
-static Keyboard::KeyState convert_key_state(int key_state) {
+static Keyboard::State convert_key_state(int key_state) {
     switch (key_state) {
     case GLFW_RELEASE:
-        return Keyboard::KeyState::Release;
+        return Keyboard::State::Release;
     case GLFW_PRESS:
-        return Keyboard::KeyState::Push;
+        return Keyboard::State::Push;
     case GLFW_REPEAT:
-        return Keyboard::KeyState::Hold;
+        return Keyboard::State::Hold;
     }
-    return Keyboard::KeyState::Invalid;
+    return Keyboard::State::Invalid;
 }
 
 namespace keyboard_detail {

@@ -16,7 +16,7 @@ struct GLFWwindow;
 namespace mkyu {
 
 struct Keyboard {
-    enum class KeyType {
+    enum class Type {
         A, B, C, D, E, F, G, H, I, J, K, L, M,
         N, O, P, Q, R, S, T, U, V, W, X, Y, Z,
 
@@ -31,7 +31,7 @@ struct Keyboard {
 
         Invalid
     };
-    enum class KeyState {
+    enum class State {
         Release,
         Push,
         Hold,
@@ -39,17 +39,17 @@ struct Keyboard {
         Invalid
     };
 
-    KeyState state(KeyType type) const {
+    State state(Type type) const {
         auto found = m_status.find(type);
         if (found == m_status.end())
-            return KeyState::Invalid;
+            return State::Invalid;
         return found->second;
     }
 
     explicit Keyboard();
     void callback(int, int);
 private:
-    std::map<KeyType, KeyState> m_status = {};
+    std::map<Type, State> m_status = {};
 };
 
 namespace keyboard_detail {
