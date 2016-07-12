@@ -18,6 +18,10 @@ struct vec<T, 2> {
     T x = static_cast<T>(0.0);
     T y = static_cast<T>(0.0);
 
+	explicit vec(T const& x, T const& y) :
+		x(x), y(y)
+	{}
+
     struct out_of_range_exception {};
     T const& at(int i) const {
         if (i == 0)
@@ -76,7 +80,7 @@ struct vec<T, 3> {
 
 template<typename T, int N>
 inline static vec<T, N> operator+(vec<T, N> const& lhs, vec<T, N> const& rhs) {
-    vec<T, N> result = {};
+    auto result = vec<T, N>{ 0.0, 0.0 };
     for (int i=0; i<N; i++)
         result.at(i) = lhs.at(i) + rhs.at(i);
     return result;
