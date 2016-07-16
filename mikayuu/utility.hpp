@@ -5,18 +5,22 @@
   file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 ============================================================================*/
 
-#include <mikayuu/layer.hpp>
-#include <mikayuu/object.hpp>
 
-void mkyu::Layer::update() {
-    on_update();
+#ifndef MIKAYUU_UTILITY_HPP
+#define MIKAYUU_UTILITY_HPP
 
-    for (auto&& o : m_objects)
-        o->draw();
+#include <memory>
+#include <vector>
+
+namespace mkyu {
+
+template<typename T>
+using ptr = std::shared_ptr<T>;
+
+template<typename T>
+using container = std::vector<ptr<T>>;
+
 }
 
-void mkyu::Layer::add_object(mkyu::ptr<mkyu::Object> const& obj) {
-    m_objects.push_back(obj);
-}
-
+#endif
 

@@ -47,7 +47,7 @@ int mkyu::Game::update() {
     return !glfwWindowShouldClose(m_window);
 }
 
-void mkyu::Game::change_scene(std::shared_ptr<mkyu::Scene> const& scene) {
+void mkyu::Game::change_scene(mkyu::ptr<mkyu::Scene> const& scene) {
     m_next_scene = scene;
 }
 

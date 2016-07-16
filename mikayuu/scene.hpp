@@ -8,9 +8,7 @@
 #ifndef MIKAYUU_SCENE_HPP
 #define MIKAYUU_SCENE_HPP
 
-#include <memory>
-#include <vector>
-
+#include <mikayuu/utility.hpp>
 
 namespace mkyu {
 
@@ -25,7 +23,7 @@ struct Scene {
 
     void update();
 
-    std::vector<std::shared_ptr<mkyu::Layer>> const& layers() const {
+    mkyu::container<mkyu::Layer> const& layers() const {
         return m_layers;
     }
 
@@ -34,9 +32,9 @@ struct Scene {
     }
 protected:
     virtual void on_update() = 0;
-    void add_layer(std::shared_ptr<mkyu::Layer> const&);
+    void add_layer(mkyu::ptr<mkyu::Layer> const&);
 private:
-    std::vector<std::shared_ptr<mkyu::Layer>> m_layers;
+    mkyu::container<mkyu::Layer> m_layers;
     mkyu::Game const& m_parent;
 };
 

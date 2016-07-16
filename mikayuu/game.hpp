@@ -9,8 +9,7 @@
 #define MIKAYUU_GAME_HPP
 
 #include <GLFW/glfw3.h>
-#include <memory>
-#include <vector>
+#include <mikayuu/utility.hpp>
 #include <mikayuu/keyboard.hpp>
 
 namespace mkyu {
@@ -30,7 +29,7 @@ struct Game {
 
     int update();
 
-    void change_scene(std::shared_ptr<mkyu::Scene> const&);
+    void change_scene(mkyu::ptr<mkyu::Scene> const&);
 
     mkyu::Keyboard const& keyboard() const {
         return m_keyboard;
@@ -41,8 +40,8 @@ private:
     GLFWwindow* m_window = nullptr;
     mkyu::Keyboard m_keyboard;
 
-    std::shared_ptr<Scene> m_current_scene;
-    std::shared_ptr<Scene> m_next_scene;
+    mkyu::ptr<Scene> m_current_scene;
+    mkyu::ptr<Scene> m_next_scene;
 };
 
 } // namespace mkyu

@@ -16,7 +16,7 @@ void mkyu::Scene::update() {
         l->update();
 }
 
-void mkyu::Scene::add_layer(std::shared_ptr<mkyu::Layer> const& layer) {
+void mkyu::Scene::add_layer(mkyu::ptr<mkyu::Layer> const& layer) {
     m_layers.push_back(layer);
 }
 
