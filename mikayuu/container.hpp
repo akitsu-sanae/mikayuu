@@ -5,8 +5,8 @@
   file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 ============================================================================*/
 
-#ifndef MIKAYUU_POLYGON_CONTAINER_HPP
-#define MIKAYUU_POLYGON_CONTAINER_HPP
+#ifndef MIKAYUU_CONTAINER_HPP
+#define MIKAYUU_CONTAINER_HPP
 
 #include <vector>
 #include <mikayuu/object.hpp>
@@ -14,7 +14,7 @@
 
 namespace mkyu {
 
-struct Container : public mkyu::Object {
+struct Container final : public mkyu::Object {
 
     void add(mkyu::ptr<Object> const& obj) {
         m_objects.push_back(obj);
@@ -31,6 +31,25 @@ struct Container : public mkyu::Object {
     void for_each(F const& f) const {
         for (auto&& e : m_objects)
             f(e);
+    }
+
+    auto begin() {
+        return m_objects.begin();
+    }
+    auto begin() const {
+        return m_objects.begin();
+    }
+    auto cbegin() const {
+        return m_objects.begin();
+    }
+    auto end() {
+        return m_objects.end();
+    }
+    auto end() const {
+        return m_objects.end();
+    }
+    auto cend() const {
+        return m_objects.end();
     }
 private:
     mkyu::container<mkyu::Object> m_objects;

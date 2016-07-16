@@ -10,7 +10,7 @@
 
 namespace mkyu {
 
-struct Color {
+struct Color final {
     double r, g, b, a;
     static Color red() {
         return Color{1.0, 0.0, 0.0, 1.0};

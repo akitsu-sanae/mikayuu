@@ -15,7 +15,7 @@ struct vector;
 
 
 template<typename T>
-struct vector<T, 2> {
+struct vector<T, 2> final {
     using value_type = T;
     value_type x = static_cast<value_type>(0);
     value_type y = static_cast<value_type>(0);
@@ -46,7 +46,7 @@ struct vector<T, 2> {
 };
 
 template<typename T>
-struct vector<T, 3> {
+struct vector<T, 3> final {
     using value_type = T;
     value_type x = static_cast<value_type>(0);
     value_type y = static_cast<value_type>(0);

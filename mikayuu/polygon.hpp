@@ -16,7 +16,7 @@
 namespace mkyu {
 
 template<int N>
-struct Polygon : public mkyu::Object {
+struct Polygon final : public mkyu::Object {
     enum class BlendMode {
         None,
         Alpha,
