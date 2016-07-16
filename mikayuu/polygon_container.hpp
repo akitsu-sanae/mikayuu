@@ -14,15 +14,18 @@
 
 namespace mkyu {
 
-template<int N>
-struct PolygonContainer : public mkyu::Object {
+struct Container : public mkyu::Object {
 
-    void add(mkyu::Polygon<N> const& poly) {
-        m_objects.push_back(poly);
+    void add(mkyu::ptr<Object> const& obj) {
+        m_objects.push_back(obj);
+    }
+    void update() {
+        for (auto&& obj: m_objects)
+            obj->update();
     }
     void draw() const {
-        for (auto&& e : m_objects)
-            e.draw();
+        for (auto const& e : m_objects)
+            e->draw();
     }
     template<typename F>
     void for_each(F const& f) const {
@@ -30,7 +33,7 @@ struct PolygonContainer : public mkyu::Object {
             f(e);
     }
 private:
-    std::vector<Polygon<N>> m_objects;
+    mkyu::container<mkyu::Object> m_objects;
 };
 
 }

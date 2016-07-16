@@ -32,7 +32,11 @@ mkyu::Game::Game(mkyu::Game::Option const& option) {
 }
 
 
-int mkyu::Game::update() {
+bool mkyu::Game::is_alive() const {
+    return !glfwWindowShouldClose(m_window);
+}
+
+void mkyu::Game::update() {
     on_update();
 
     if (m_current_scene)
@@ -44,7 +48,11 @@ int mkyu::Game::update() {
     glfwSwapBuffers(m_window);
     glfwPollEvents();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    return !glfwWindowShouldClose(m_window);
+}
+
+void mkyu::Game::draw() const {
+    if (m_current_scene)
+        m_current_scene->draw();
 }
 
 void mkyu::Game::change_scene(mkyu::ptr<mkyu::Scene> const& scene) {

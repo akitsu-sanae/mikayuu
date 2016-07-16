@@ -37,6 +37,7 @@ struct Polygon : public mkyu::Object {
 
     BlendMode blend() const { return blend_mode; }
     void blend(BlendMode mode) { blend_mode = mode; }
+    void update() {}
     void draw() const;
 
     void do_blend() const;

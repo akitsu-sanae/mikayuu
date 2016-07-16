@@ -18,6 +18,7 @@ struct Object {
     {}
     virtual ~Object() = default;
     virtual void draw() const = 0;
+    virtual void update() = 0;
 
     mkyu::vector2d position;
 };

@@ -21,6 +21,7 @@ struct Layer {
     {}
     virtual ~Layer() {}
 
+    void draw() const;
     void update();
 
     mkyu::container<mkyu::Object> const& objects() const {

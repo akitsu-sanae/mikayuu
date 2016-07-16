@@ -9,6 +9,11 @@
 #include <mikayuu/game.hpp>
 #include <mikayuu/layer.hpp>
 
+void mkyu::Scene::draw() const {
+    for (auto const& layer: m_layers)
+        layer->draw();
+}
+
 void mkyu::Scene::update() {
     on_update();
 

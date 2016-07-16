@@ -19,8 +19,9 @@ struct Scene {
     Scene(mkyu::Game const& p) :
         m_parent(p)
     {}
-    virtual ~Scene() {}
+    virtual ~Scene() = default;
 
+    void draw() const;
     void update();
 
     mkyu::container<mkyu::Layer> const& layers() const {

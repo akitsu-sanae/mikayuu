@@ -8,11 +8,16 @@
 #include <mikayuu/layer.hpp>
 #include <mikayuu/object.hpp>
 
+void mkyu::Layer::draw() const {
+    for (auto const& obj: m_objects)
+        obj->draw();
+}
+
 void mkyu::Layer::update() {
     on_update();
 
     for (auto&& o : m_objects)
-        o->draw();
+        o->update();
 }
 
 void mkyu::Layer::add_object(mkyu::ptr<mkyu::Object> const& obj) {

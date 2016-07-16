@@ -27,7 +27,9 @@ struct Game {
     explicit Game(mkyu::Game::Option const&);
     virtual ~Game();
 
-    int update();
+    bool is_alive() const;
+    void update();
+    void draw() const;
 
     void change_scene(mkyu::ptr<mkyu::Scene> const&);
 
