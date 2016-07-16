@@ -8,18 +8,18 @@
 #ifndef MIKAYUU_DRAWABLE_HP
 #define MIKAYUU_DRAWABLE_HP
 
-#include <mikayuu/vec.hpp>
+#include <mikayuu/vector.hpp>
 
 namespace mkyu {
 
 struct DrawableObject {
-    explicit DrawableObject(vec2d const& position) :
+    explicit DrawableObject(mkyu::vector2d const& position) :
         position(position)
     {}
     virtual ~DrawableObject() {}
     virtual void draw() const = 0;
 
-    vec2d position;
+    mkyu::vector2d position;
 };
 
 }

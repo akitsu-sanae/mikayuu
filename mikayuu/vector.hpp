@@ -5,25 +5,27 @@
   file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 ============================================================================*/
 
-#ifndef MIKAYUU_VEC2D_HPP
-#define MIKAYUU_VEC2D_HPP
+#ifndef MIKAYUU_VECTOR_HPP
+#define MIKAYUU_VECTOR_HPP
 
 namespace mkyu {
 
 template<typename, int>
-struct vec;
+struct vector;
+
 
 template<typename T>
-struct vec<T, 2> {
-    T x = static_cast<T>(0.0);
-    T y = static_cast<T>(0.0);
+struct vector<T, 2> {
+    using value_type = T;
+    value_type x = static_cast<value_type>(0);
+    value_type y = static_cast<value_type>(0);
 
-	explicit vec(T const& x, T const& y) :
+	explicit vector(value_type const& x, value_type const& y) :
 		x(x), y(y)
 	{}
 
     struct out_of_range_exception {};
-    T const& at(int i) const {
+    value_type const& at(int i) const {
         if (i == 0)
             return x;
         else if (i == 1)
@@ -32,7 +34,7 @@ struct vec<T, 2> {
             throw out_of_range_exception{};
     }
 
-    T& at(int i) {
+    value_type& at(int i) {
         if (i == 0)
             return x;
         else if (i == 1)
@@ -44,13 +46,14 @@ struct vec<T, 2> {
 };
 
 template<typename T>
-struct vec<T, 3> {
-    T x = static_cast<T>(0.0);
-    T y = static_cast<T>(0.0);
-    T z = static_cast<T>(0.0);
+struct vector<T, 3> {
+    using value_type = T;
+    value_type x = static_cast<value_type>(0);
+    value_type y = static_cast<value_type>(0);
+    value_type z = static_cast<value_type>(0);
 
     struct out_of_range_exception {};
-    T const& at(int i) const {
+    value_type const& at(int i) const {
         switch (i) {
         case 0:
             return x;
@@ -63,7 +66,7 @@ struct vec<T, 3> {
         }
     }
 
-    T& at(int i) {
+    value_type& at(int i) {
         switch (i) {
         case 0:
             return x;
@@ -79,29 +82,16 @@ struct vec<T, 3> {
 };
 
 template<typename T, int N>
-inline static vec<T, N> operator+(vec<T, N> const& lhs, vec<T, N> const& rhs) {
-    auto result = vec<T, N>{ 0.0, 0.0 };
+inline static vector<T, N> operator+(vector<T, N> const& lhs, vector<T, N> const& rhs) {
+    auto result = vector<T, N>{ 0.0, 0.0 };
     for (int i=0; i<N; i++)
         result.at(i) = lhs.at(i) + rhs.at(i);
     return result;
 }
 
-template<int N>
-using vecd = vec<double, N>;
 
-template<int N>
-using vecf = vec<float, N>;
-
-template<typename T>
-using vec2 = vec<T, 2>;
-
-template<typename T>
-using vec3 = vec<T, 3>;
-
-using vec2d = vec<double , 2>;
-using vec2f = vec<float, 2>;
-using vec3d = vec<double, 3>;
-using vec3f = vec<float, 3>;
+using vector2d = vector<double , 2>;
+using vector3d = vector<double, 3>;
 
 }
 

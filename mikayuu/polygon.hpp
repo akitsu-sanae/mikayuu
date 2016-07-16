@@ -11,7 +11,7 @@
 #include <array>
 #include <mikayuu/drawable_object.hpp>
 #include <mikayuu/color.hpp>
-#include <mikayuu/vec.hpp>
+#include <mikayuu/vector.hpp>
 
 namespace mkyu {
 
@@ -26,12 +26,12 @@ struct Polygon : public mkyu::DrawableObject {
         Mult
     };
 
-    explicit Polygon(vec2d const& position, std::array<vec2d, N> const& nodes, Color const& c) :
+    explicit Polygon(vector2d const& position, std::array<vector2d, N> const& nodes, Color const& c) :
         DrawableObject(position),
         nodes(nodes),
         color(c)
     {}
-    std::array<vecd<2>, N> nodes = {};
+    std::array<vector2d, N> nodes = {};
     Color color = {};
     BlendMode blend_mode = BlendMode::None;
 
