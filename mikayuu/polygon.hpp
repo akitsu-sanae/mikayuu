@@ -9,14 +9,14 @@
 #define MIKAYUU_POLYGON_HPP
 
 #include <array>
-#include <mikayuu/drawable_object.hpp>
+#include <mikayuu/object.hpp>
 #include <mikayuu/color.hpp>
 #include <mikayuu/vector.hpp>
 
 namespace mkyu {
 
 template<int N>
-struct Polygon : public mkyu::DrawableObject {
+struct Polygon : public mkyu::Object {
     enum class BlendMode {
         None,
         Alpha,
@@ -27,7 +27,7 @@ struct Polygon : public mkyu::DrawableObject {
     };
 
     explicit Polygon(vector2d const& position, std::array<vector2d, N> const& nodes, Color const& c) :
-        DrawableObject(position),
+        Object(position),
         nodes(nodes),
         color(c)
     {}

@@ -6,17 +6,17 @@
 ============================================================================*/
 
 #include <mikayuu/layer.hpp>
-#include <mikayuu/drawable_object.hpp>
+#include <mikayuu/object.hpp>
 
 void mkyu::Layer::update() {
     on_update();
 
-    for (auto&& o : m_drawable_objects)
+    for (auto&& o : m_objects)
         o->draw();
 }
 
-void mkyu::Layer::add_object(std::shared_ptr<mkyu::DrawableObject> const& obj) {
-    m_drawable_objects.push_back(obj);
+void mkyu::Layer::add_object(std::shared_ptr<mkyu::Object> const& obj) {
+    m_objects.push_back(obj);
 }
 
 

@@ -11,7 +11,6 @@
 #include <GLFW/glfw3.h>
 #include <memory>
 #include <vector>
-#include <mikayuu/drawable_object.hpp>
 #include <mikayuu/keyboard.hpp>
 
 namespace mkyu {

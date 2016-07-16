@@ -14,7 +14,7 @@
 namespace mkyu {
 
 struct Scene;
-struct DrawableObject;
+struct Object;
 
 struct Layer {
     Layer(mkyu::Scene const& p) :
@@ -24,8 +24,8 @@ struct Layer {
 
     void update();
 
-    std::vector<std::shared_ptr<mkyu::DrawableObject>> const& objects() const {
-        return m_drawable_objects;
+    std::vector<std::shared_ptr<mkyu::Object>> const& objects() const {
+        return m_objects;
     }
 
     mkyu::Scene const& parent() const {
@@ -33,9 +33,9 @@ struct Layer {
     }
 protected:
     virtual void on_update() = 0;
-    void add_object(std::shared_ptr<DrawableObject> const&);
+    void add_object(std::shared_ptr<mkyu::Object> const&);
 private:
-    std::vector<std::shared_ptr<mkyu::DrawableObject>> m_drawable_objects;
+    std::vector<std::shared_ptr<mkyu::Object>> m_objects;
     mkyu::Scene const& m_parent;
 };
 

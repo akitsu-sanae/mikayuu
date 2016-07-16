@@ -9,13 +9,13 @@
 #define MIKAYUU_POLYGON_CONTAINER_HPP
 
 #include <vector>
-#include <mikayuu/drawable_object.hpp>
+#include <mikayuu/object.hpp>
 #include <mikayuu/polygon.hpp>
 
 namespace mkyu {
 
 template<int N>
-struct PolygonContainer : public mkyu::DrawableObject {
+struct PolygonContainer : public mkyu::Object {
 
     void add(mkyu::Polygon<N> const& poly) {
         m_objects.push_back(poly);
