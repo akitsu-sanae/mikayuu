@@ -13,6 +13,11 @@
 #include <mikayuu/scene.hpp>
 #include <mikayuu/keyboard.hpp>
 
+static void init_gl() {
+    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glEnable(GL_DEPTH_TEST);
+}
+
 mkyu::Game::Game(mkyu::Game::Option const& option) {
 
     glfwInit();
@@ -28,7 +33,7 @@ mkyu::Game::Game(mkyu::Game::Option const& option) {
     glfwMakeContextCurrent(m_window);
     glfwSetKeyCallback(m_window, keyboard_detail::callback_impl);
 
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    init_gl();
 }
 
 
@@ -44,15 +49,32 @@ void mkyu::Game::update() {
 
     if (m_current_scene != m_next_scene)
         m_current_scene = m_next_scene;
-
-    glfwSwapBuffers(m_window);
     glfwPollEvents();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void mkyu::Game::draw() const {
-    if (m_current_scene)
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+
+    int width, height;
+    glfwGetFramebufferSize(m_window, &width, &height);
+    glViewport(0, 0, width, height);
+
+    gluPerspective(30.0, (double)width/ (double)height, 1.0, 100.0);
+
+    gluLookAt(
+            0.0, 0.0, 10.0, // origin position
+            0.0, 0.0, 0.0, // target position
+            0.0, 1.0, 0.0 // up direction
+            );
+
+    static const GLfloat light_position[] = {0.0, 3.0, 5.0, 1.0};
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+   if (m_current_scene)
         m_current_scene->draw();
+
+    glfwSwapBuffers(m_window);
 }
 
 void mkyu::Game::change_scene(mkyu::ptr<mkyu::Scene> const& scene) {
