@@ -12,19 +12,12 @@
 #include <mikayuu/object.hpp>
 #include <mikayuu/color.hpp>
 #include <mikayuu/vector.hpp>
+#include <mikayuu/blend_mode.hpp>
 
 namespace mkyu {
 
 template<int N>
 struct Polygon final : public mkyu::Object {
-    enum class BlendMode {
-        None,
-        Alpha,
-        Reverse,
-        Add,
-        Screen,
-        Mult
-    };
 
     explicit Polygon(vector2d const& position, std::array<vector2d, N> const& nodes, Color const& c) :
         Object(position),
