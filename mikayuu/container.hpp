@@ -19,11 +19,11 @@ struct Container final : public mkyu::Object {
     void add(mkyu::ptr<Object> const& obj) {
         m_objects.push_back(obj);
     }
-    void update() {
+    void update() override  {
         for (auto&& obj: m_objects)
             obj->update();
     }
-    void draw() const {
+    void draw() override const {
         for (auto const& e : m_objects)
             e->draw();
     }

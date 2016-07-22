@@ -135,19 +135,23 @@
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\keyboard.cpp" />
     <ClCompile Include="src\layer.cpp" />
+    <ClCompile Include="src\mesh.cpp" />
     <ClCompile Include="src\polygon.cpp" />
     <ClCompile Include="src\scene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="mikayuu\blend_mode.hpp" />
     <ClInclude Include="mikayuu\color.hpp" />
-    <ClInclude Include="mikayuu\drawable_object.hpp" />
     <ClInclude Include="mikayuu\game.hpp" />
     <ClInclude Include="mikayuu\keyboard.hpp" />
     <ClInclude Include="mikayuu\layer.hpp" />
+    <ClInclude Include="mikayuu\mesh.hpp" />
+    <ClInclude Include="mikayuu\node.hpp" />
+    <ClInclude Include="mikayuu\object.hpp" />
     <ClInclude Include="mikayuu\polygon.hpp" />
-    <ClInclude Include="mikayuu\polygon_container.hpp" />
     <ClInclude Include="mikayuu\scene.hpp" />
-    <ClInclude Include="mikayuu\vec.hpp" />
+    <ClInclude Include="mikayuu\utility.hpp" />
+    <ClInclude Include="mikayuu\vector.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
