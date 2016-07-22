@@ -43,7 +43,12 @@ struct vector<T, 2> final {
         else
             throw out_of_range_exception{};
     }
-
+    value_type const& operator[](int i) const {
+        return at(i);
+    }
+    value_type& operator[](int i) {
+        return at(i);
+    }
 };
 
 template<typename T>
@@ -84,6 +89,12 @@ struct vector<T, 3> final {
         }
     }
 
+    value_type const& operator[](int i) const {
+        return at(i);
+    }
+    value_type& operator[](int i) {
+        return at(i);
+    }
 };
 
 template<typename T, int N>
