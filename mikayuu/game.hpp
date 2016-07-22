@@ -11,6 +11,7 @@
 #include <GLFW/glfw3.h>
 #include <mikayuu/utility.hpp>
 #include <mikayuu/keyboard.hpp>
+#include <mikayuu/camera.hpp>
 
 namespace mkyu {
 
@@ -41,6 +42,7 @@ protected:
 private:
     GLFWwindow* m_window = nullptr;
     mkyu::Keyboard m_keyboard;
+    mkyu::camera m_camera;
 
     mkyu::ptr<Scene> m_current_scene;
     mkyu::ptr<Scene> m_next_scene;

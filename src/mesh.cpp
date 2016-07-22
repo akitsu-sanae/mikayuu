@@ -55,7 +55,7 @@ mkyu::Mesh::load(std::string const& filename)
 
 void mkyu::Mesh::draw() const {
     glPushMatrix();
-    glTranslated(this->position.x, this->position.y, 0.0);
+    glTranslated(position.x, position.y, position.z);
     glBegin(GL_TRIANGLES);
     for (auto const& face : m_faces) {
         for (auto const& node_id: face.node_ids) {

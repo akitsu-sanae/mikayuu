@@ -132,6 +132,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\keyboard.cpp" />
     <ClCompile Include="src\layer.cpp" />
@@ -141,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mikayuu\blend_mode.hpp" />
+    <ClInclude Include="mikayuu\camera.hpp" />
     <ClInclude Include="mikayuu\color.hpp" />
     <ClInclude Include="mikayuu\game.hpp" />
     <ClInclude Include="mikayuu\keyboard.hpp" />

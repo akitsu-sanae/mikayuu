@@ -61,13 +61,7 @@ void mkyu::Game::draw() const {
     glViewport(0, 0, width, height);
 
     gluPerspective(30.0, (double)width/ (double)height, 1.0, 100.0);
-
-    gluLookAt(
-            0.0, 0.0, 10.0, // origin position
-            0.0, 0.0, 0.0, // target position
-            0.0, 1.0, 0.0 // up direction
-            );
-
+    m_camera.look_at();
     static const GLfloat light_position[] = {0.0, 3.0, 5.0, 1.0};
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
