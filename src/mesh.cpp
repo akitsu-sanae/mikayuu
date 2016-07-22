@@ -40,7 +40,7 @@ mkyu::Mesh::load(std::string const& filename)
     if (!input)
         return nullptr;
 
-    auto result = std::make_unique<mkyu::Mesh>(mkyu::vector2d{0.0, 0.0});
+    auto result = std::make_unique<mkyu::Mesh>();
 
     while (!input.eof()) {
         int type;
@@ -54,6 +54,8 @@ mkyu::Mesh::load(std::string const& filename)
 }
 
 void mkyu::Mesh::draw() const {
+    glPushMatrix();
+    glTranslated(this->position.x, this->position.y, 0.0);
     glBegin(GL_TRIANGLES);
     for (auto const& face : m_faces) {
         for (auto const& node_id: face.node_ids) {
@@ -62,6 +64,7 @@ void mkyu::Mesh::draw() const {
         }
     }
     glEnd();
+    glPopMatrix();
 }
 
 

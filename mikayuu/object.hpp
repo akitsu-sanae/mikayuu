@@ -13,14 +13,11 @@
 namespace mkyu {
 
 struct Object {
-    explicit Object(mkyu::vector2d const& position) :
-        position(position)
-    {}
     virtual ~Object() = default;
     virtual void draw() const = 0;
     virtual void update() = 0;
 
-    mkyu::vector2d position;
+    mkyu::vector3d position;
 };
 
 }

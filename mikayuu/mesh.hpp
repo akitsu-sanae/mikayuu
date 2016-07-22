@@ -19,9 +19,6 @@ namespace mkyu {
 
 struct Mesh : public mkyu::Object {
     static std::unique_ptr<Mesh> load(std::string const&);
-    explicit Mesh(vector2d const& position) :
-        mkyu::Object(position)
-    {}
     virtual ~Mesh() = default;
 
     void update() override {}

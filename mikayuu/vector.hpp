@@ -20,6 +20,7 @@ struct vector<T, 2> final {
     value_type x = static_cast<value_type>(0);
     value_type y = static_cast<value_type>(0);
 
+    explicit vector() = default;
 	explicit vector(value_type const& x, value_type const& y) :
 		x(x), y(y)
 	{}
@@ -51,6 +52,10 @@ struct vector<T, 3> final {
     value_type x = static_cast<value_type>(0);
     value_type y = static_cast<value_type>(0);
     value_type z = static_cast<value_type>(0);
+    explicit vector() = default;
+    explicit vector(value_type const& x, value_type const& y, value_type const& z) :
+        x(x), y(y), z(z)
+    {}
 
     struct out_of_range_exception {};
     value_type const& at(int i) const {
@@ -83,7 +88,7 @@ struct vector<T, 3> final {
 
 template<typename T, int N>
 inline static vector<T, N> operator+(vector<T, N> const& lhs, vector<T, N> const& rhs) {
-    auto result = vector<T, N>{ 0.0, 0.0 };
+    auto result = vector<T, N>{};
     for (int i=0; i<N; i++)
         result.at(i) = lhs.at(i) + rhs.at(i);
     return result;

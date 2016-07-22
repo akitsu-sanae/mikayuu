@@ -19,12 +19,11 @@ namespace mkyu {
 template<int N>
 struct Polygon final : public mkyu::Object {
 
-    explicit Polygon(vector2d const& position, std::array<vector2d, N> const& nodes, Color const& c) :
-        Object(position),
+    explicit Polygon(std::array<vector3d, N> const& nodes, Color const& c) :
         nodes(nodes),
         color(c)
     {}
-    std::array<vector2d, N> nodes = {};
+    std::array<vector3d, N> nodes = {};
     Color color = {};
     BlendMode blend_mode = BlendMode::None;
 
