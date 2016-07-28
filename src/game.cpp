@@ -31,7 +31,7 @@ mkyu::Game::Game(mkyu::Game::Option const& option) {
         exit(1);
     }
     glfwMakeContextCurrent(m_window);
-    glfwSetKeyCallback(m_window, keyboard_detail::callback_impl);
+    Keyboard::set_window(m_window);
 
     init_gl();
 }
@@ -50,6 +50,7 @@ void mkyu::Game::update() {
     if (m_current_scene != m_next_scene)
         m_current_scene = m_next_scene;
     glfwPollEvents();
+    Keyboard::update();
 }
 
 void mkyu::Game::draw() const {

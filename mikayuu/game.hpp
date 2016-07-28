@@ -33,15 +33,10 @@ struct Game {
     void draw() const;
 
     void change_scene(mkyu::ptr<mkyu::Scene> const&);
-
-    mkyu::Keyboard const& keyboard() const {
-        return m_keyboard;
-    }
 protected:
     virtual void on_update() = 0;
 private:
     GLFWwindow* m_window = nullptr;
-    mkyu::Keyboard m_keyboard;
     mkyu::camera m_camera;
 
     mkyu::ptr<Scene> m_current_scene;

@@ -9,52 +9,39 @@
 #define MIKAYUU_KEYBOARD_HPP
 
 #include <string>
-#include <map>
+#include <unordered_map>
 
 struct GLFWwindow;
 
 namespace mkyu {
 
-struct Keyboard final {
-    enum class Type {
-        A, B, C, D, E, F, G, H, I, J, K, L, M,
-        N, O, P, Q, R, S, T, U, V, W, X, Y, Z,
+enum class KeyType {
+    A, B, C, D, E, F, G, H, I, J, K, L, M,
+    N, O, P, Q, R, S, T, U, V, W, X, Y, Z,
 
-        Zero, One, Two, Three, Four,
-        Five, Six, Seven, Eight, Nine,
+    Down, Up, Left, Right,
 
-        Up, Down, Left, Right,
-
-        Space, Enter,
-        Shift, Ctrl,
-        Escape,
-
-        Invalid
-    };
-    enum class State {
-        Release,
-        Push,
-        Hold,
-
-        Invalid
-    };
-
-    State state(Type type) const {
-        auto found = m_status.find(type);
-        if (found == m_status.end())
-            return State::Invalid;
-        return found->second;
-    }
-
-    explicit Keyboard();
-    void callback(int, int);
-private:
-    std::map<Type, State> m_status = {};
+    Space
 };
 
-namespace keyboard_detail {
-void callback_impl(GLFWwindow*, int, int, int, int);
-}
+enum class KeyState {
+    Release,
+    Push,
+    Hold
+};
+
+struct Keyboard final {
+    struct unknouwn_key_exception : std::exception {};
+
+    static void set_window(GLFWwindow* win) {
+        m_window = win;
+    }
+    static void update();
+    static KeyState state(KeyType type);
+private:
+    static std::unordered_map<KeyType, KeyState> m_key_states;
+    static GLFWwindow* m_window;
+};
 
 }
 

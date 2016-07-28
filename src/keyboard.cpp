@@ -11,102 +11,96 @@
 
 namespace mkyu {
 
-static Keyboard::Type convert_key(int key) {
-    switch(key) {
-    case GLFW_KEY_A:
-        return Keyboard::Type::A;
-    case GLFW_KEY_B:
-        return Keyboard::Type::B;
-    case GLFW_KEY_C:
-        return Keyboard::Type::C;
-    case GLFW_KEY_D:
-        return Keyboard::Type::D;
-    case GLFW_KEY_E:
-        return Keyboard::Type::E;
-    case GLFW_KEY_F:
-        return Keyboard::Type::F;
-    case GLFW_KEY_G:
-        return Keyboard::Type::G;
-    case GLFW_KEY_H:
-        return Keyboard::Type::H;
-    case GLFW_KEY_I:
-        return Keyboard::Type::I;
-    case GLFW_KEY_J:
-        return Keyboard::Type::J;
-    case GLFW_KEY_K:
-        return Keyboard::Type::K;
-    case GLFW_KEY_L:
-        return Keyboard::Type::L;
-    case GLFW_KEY_M:
-        return Keyboard::Type::M;
-    case GLFW_KEY_N:
-        return Keyboard::Type::N;
-    case GLFW_KEY_O:
-        return Keyboard::Type::O;
-    case GLFW_KEY_P:
-        return Keyboard::Type::P;
-    case GLFW_KEY_Q:
-        return Keyboard::Type::Q;
-    case GLFW_KEY_R:
-        return Keyboard::Type::R;
-    case GLFW_KEY_S:
-        return Keyboard::Type::S;
-    case GLFW_KEY_T:
-        return Keyboard::Type::T;
-    case GLFW_KEY_U:
-        return Keyboard::Type::U;
-    case GLFW_KEY_V:
-        return Keyboard::Type::V;
-    case GLFW_KEY_W:
-        return Keyboard::Type::W;
-    case GLFW_KEY_X:
-        return Keyboard::Type::X;
-    case GLFW_KEY_Y:
-        return Keyboard::Type::Y;
-    case GLFW_KEY_Z:
-        return Keyboard::Type::Z;
-    case GLFW_KEY_UP:
-        return Keyboard::Type::Up;
-    case GLFW_KEY_DOWN:
-        return Keyboard::Type::Down;
-    case GLFW_KEY_LEFT:
-        return Keyboard::Type::Left;
-    case GLFW_KEY_RIGHT:
-        return Keyboard::Type::Right;
+GLFWwindow* Keyboard::m_window;
+std::unordered_map<KeyType, KeyState> Keyboard::m_key_states;
+
+static int convert_key(KeyType type) {
+    switch (type) {
+    case KeyType::A:
+        return GLFW_KEY_A;
+    case KeyType::B:
+        return GLFW_KEY_B;
+    case KeyType::C:
+        return GLFW_KEY_C;
+    case KeyType::D:
+        return GLFW_KEY_D;
+    case KeyType::E:
+        return GLFW_KEY_E;
+    case KeyType::F:
+        return GLFW_KEY_F;
+    case KeyType::G:
+        return GLFW_KEY_G;
+    case KeyType::H:
+        return GLFW_KEY_H;
+    case KeyType::I:
+        return GLFW_KEY_I;
+    case KeyType::J:
+        return GLFW_KEY_J;
+    case KeyType::K:
+        return GLFW_KEY_K;
+    case KeyType::L:
+        return GLFW_KEY_L;
+    case KeyType::M:
+        return GLFW_KEY_M;
+    case KeyType::N:
+        return GLFW_KEY_N;
+    case KeyType::O:
+        return GLFW_KEY_O;
+    case KeyType::P:
+        return GLFW_KEY_P;
+    case KeyType::Q:
+        return GLFW_KEY_Q;
+    case KeyType::R:
+        return GLFW_KEY_R;
+    case KeyType::S:
+        return GLFW_KEY_S;
+    case KeyType::T:
+        return GLFW_KEY_T;
+    case KeyType::U:
+        return GLFW_KEY_U;
+    case KeyType::V:
+        return GLFW_KEY_V;
+    case KeyType::W:
+        return GLFW_KEY_W;
+    case KeyType::X:
+        return GLFW_KEY_X;
+    case KeyType::Y:
+        return GLFW_KEY_Y;
+    case KeyType::Z:
+        return GLFW_KEY_Z;
+
+    case KeyType::Down:
+        return GLFW_KEY_DOWN;
+    case KeyType::Up:
+        return GLFW_KEY_UP;
+    case KeyType::Left:
+        return GLFW_KEY_LEFT;
+    case KeyType::Right:
+        return GLFW_KEY_RIGHT;
+    case KeyType::Space:
+        return GLFW_KEY_SPACE;
     }
-    return Keyboard::Type::Invalid;
 }
 
-static Keyboard::State convert_key_state(int key_state) {
-    switch (key_state) {
-    case GLFW_RELEASE:
-        return Keyboard::State::Release;
-    case GLFW_PRESS:
-        return Keyboard::State::Push;
-    case GLFW_REPEAT:
-        return Keyboard::State::Hold;
-    }
-    return Keyboard::State::Invalid;
+void mkyu::Keyboard::update() {
+    auto update = [](KeyType key) {
+        bool is_pressed = glfwGetKey(m_window, convert_key(key)) == GLFW_PRESS;
+        if (!is_pressed)
+            m_key_states[key] = KeyState::Release;
+        else if (m_key_states[key] == KeyState::Release)
+            m_key_states[key] = KeyState::Push;
+        else
+            m_key_states[key] = KeyState::Hold;
+    };
+    for (int i = 0; i <= static_cast<int>(KeyType::Space); i++)
+        update(static_cast<KeyType>(i));
 }
 
-namespace keyboard_detail {
-
-static Keyboard* keyboard_handler = nullptr;
-
-void callback_impl(GLFWwindow*, int key_code, int, int action, int) {
-    keyboard_handler->callback(key_code, action);
-}
-
-} // namespace keyboard_detail
-
-Keyboard::Keyboard() {
-    keyboard_detail::keyboard_handler = this;
-}
-
-void Keyboard::callback(int key_code, int action) {
-    auto key = convert_key(key_code);
-    auto state = convert_key_state(action);
-    m_status[key] = state;
+KeyState Keyboard::state(KeyType key) {
+    auto it = m_key_states.find(key);
+    if (it == m_key_states.end())
+        throw unknouwn_key_exception{};
+    return it->second;
 }
 
 } // namespace mkyu
