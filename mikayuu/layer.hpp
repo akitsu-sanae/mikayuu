@@ -8,37 +8,66 @@
 #ifndef MIKAYUU_LAYER_HPP
 #define MIKAYUU_LAYER_HPP
 
-#include <mikayuu/utility.hpp>
+#include <unordered_map>
+#include <memory>
+
+#include <mikayuu/object.hpp>
 
 namespace mkyu {
 
 struct Scene;
-struct Object;
 
 struct Layer {
-    Layer(mkyu::Scene const& p) :
-        m_parent(p)
+    Layer(Scene const& p) :
+        m_scene(p)
     {}
-    virtual ~Layer() {}
+    virtual ~Layer() = default;
 
-    void draw() const;
-    void update();
-
-    mkyu::container<mkyu::Object> const& objects() const {
-        return m_objects;
+    void draw() const {
+        for (auto const& obj : m_objects)
+            obj.second->draw();
+    }
+    void update() {
+        on_update();
+        for (auto&& obj : m_objects)
+            obj.second->update();
     }
 
-    mkyu::Scene const& parent() const {
-        return m_parent;
+    template<typename F>
+    void foreach(F const& f) const {
+        for (auto&& e : m_objects)
+            f(e.second);
+    }
+    template<typename F>
+    void foreach_with_name(F const& f) const {
+        for (auto&& e : m_objects)
+            f(e.first, e.second);
+    }
+
+    template<typename T = mkyu::Object>
+    T const& object(std::string const& name) const {
+        return dynamic_cast<T const&>(m_objects.find(name)->second);
+    }
+    template<typename T = mkyu::Object>
+    T& object(std::string const& name) {
+        return dynamic_cast<T&>(m_objects.find(name)->second);
+    }
+    std::vector<std::string> object_names() const {
+        std::vector<std::string> names = {};
+        names.reserve(m_objects.size());
+        for (auto const& e : m_objects)
+            names.push_back(e.first);
+        return names;
     }
 protected:
-    virtual void on_update() = 0;
-    void add_object(mkyu::ptr<mkyu::Object> const&);
+    virtual void on_update() {}
+    void add_object(std::string const& name, std::shared_ptr<Object> const& obj) {
+        m_objects.insert(std::make_pair(name, obj));
+    }
 private:
-    mkyu::container<mkyu::Object> m_objects;
-    mkyu::Scene const& m_parent;
+    std::unordered_map<std::string, std::shared_ptr<Object>> m_objects;
+    Scene const& m_scene;
 };
-
 
 }
 

@@ -8,14 +8,17 @@
 #ifndef MIKAYUU_GAME_HPP
 #define MIKAYUU_GAME_HPP
 
+#include <memory>
+#include <iostream>
+
+#define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
-#include <mikayuu/utility.hpp>
+
+#include <mikayuu/scene.hpp>
 #include <mikayuu/keyboard.hpp>
 #include <mikayuu/camera.hpp>
 
 namespace mkyu {
-
-struct Scene;
 
 struct Game {
     struct Option {
@@ -25,22 +28,73 @@ struct Game {
         bool is_fullscreen = false;
     };
 
-    explicit Game(mkyu::Game::Option const&);
-    virtual ~Game();
+    explicit Game(mkyu::Game::Option const& option) {
+        glfwInit();
+        m_window = glfwCreateWindow(
+            option.width, option.height,
+            option.title,
+            nullptr, nullptr);
+        if (!m_window) {
+            glfwTerminate();
+            exit(1);
+        }
+        glfwMakeContextCurrent(m_window);
+        glClearColor(0.0, 0.0, 0.0, 1.0);
+        glEnable(GL_DEPTH_TEST);
+        // glEnable(GL_CULL_FACE);
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
 
-    bool is_alive() const;
-    void update();
-    void draw() const;
+        Keyboard::set_window(m_window);
+    }
+    virtual ~Game() {
+        glfwTerminate();
+    }
 
-    void change_scene(mkyu::ptr<mkyu::Scene> const&);
+    bool is_alive() const {
+        return !glfwWindowShouldClose(m_window);
+    }
+    void update() {
+        on_update();
+
+        if (m_current_scene)
+            m_current_scene->update();
+
+        if (m_next_scene) {
+            m_current_scene = std::move(m_next_scene);
+            m_next_scene = nullptr;
+        }
+        glfwPollEvents();
+        Keyboard::update();
+    }
+    void draw() const {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glLoadIdentity();
+        int width, height;
+        glfwGetFramebufferSize(m_window, &width, &height);
+        glViewport(0, 0, width, height);
+        gluPerspective(30.0, (double)width / (double)height, 1.0, 100.0);
+        m_camera.look_at();
+        static const GLfloat light_position[] = { 0.0, 3.0, 5.0, 1.0 };
+        glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+        if (m_current_scene)
+            m_current_scene->draw();
+        glfwSwapBuffers(m_window);
+    }
+
+    template<typename T>
+    void change_scene(T&& scene) {
+        m_next_scene = std::make_unique<T>(std::move(scene));
+    }
 protected:
     virtual void on_update() = 0;
 private:
     GLFWwindow* m_window = nullptr;
     mkyu::camera m_camera;
 
-    mkyu::ptr<Scene> m_current_scene;
-    mkyu::ptr<Scene> m_next_scene;
+    std::unique_ptr<Scene> m_current_scene = nullptr;
+    std::unique_ptr<Scene> m_next_scene = nullptr;
 };
 
 } // namespace mkyu

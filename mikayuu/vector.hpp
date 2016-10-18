@@ -15,7 +15,7 @@ struct vector;
 
 
 template<typename T>
-struct vector<T, 2> final {
+struct vector<T, 2> {
     using value_type = T;
     value_type x = static_cast<value_type>(0);
     value_type y = static_cast<value_type>(0);
@@ -43,16 +43,12 @@ struct vector<T, 2> final {
         else
             throw out_of_range_exception{};
     }
-    value_type const& operator[](int i) const {
-        return at(i);
-    }
-    value_type& operator[](int i) {
-        return at(i);
-    }
+    value_type const& operator[](int i) const { return at(i); }
+    value_type& operator[](int i) { return at(i); }
 };
 
 template<typename T>
-struct vector<T, 3> final {
+struct vector<T, 3> {
     using value_type = T;
     value_type x = static_cast<value_type>(0);
     value_type y = static_cast<value_type>(0);
@@ -89,16 +85,15 @@ struct vector<T, 3> final {
         }
     }
 
-    value_type const& operator[](int i) const {
-        return at(i);
-    }
-    value_type& operator[](int i) {
-        return at(i);
-    }
+    value_type const& operator[](int i) const { return at(i); }
+    value_type& operator[](int i) { return at(i); }
 };
 
 template<typename T, int N>
-inline static vector<T, N> operator+(vector<T, N> const& lhs, vector<T, N> const& rhs) {
+inline static vector<T, N>
+operator+(
+    vector<T, N> const& lhs,
+    vector<T, N> const& rhs) {
     auto result = vector<T, N>{};
     for (int i=0; i<N; i++)
         result.at(i) = lhs.at(i) + rhs.at(i);

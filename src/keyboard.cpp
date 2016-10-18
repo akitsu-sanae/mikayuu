@@ -6,8 +6,18 @@
 ============================================================================*/
 
 #include <array>
+#define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 #include <mikayuu/keyboard.hpp>
+#include <mikayuu/object.hpp>
+#include <mikayuu/camera.hpp>
+#include <mikayuu/color.hpp>
+#include <mikayuu/blend_mode.hpp>
+#include <mikayuu/mesh.hpp>
+#include <mikayuu/object.hpp>
+#include <mikayuu/layer.hpp>
+#include <mikayuu/scene.hpp>
+#include <mikayuu/game.hpp>
 
 namespace mkyu {
 
@@ -79,6 +89,8 @@ static int convert_key(KeyType type) {
         return GLFW_KEY_RIGHT;
     case KeyType::Space:
         return GLFW_KEY_SPACE;
+    default:
+        throw std::logic_error{"invalid key type"};
     }
 }
 
@@ -92,8 +104,9 @@ void mkyu::Keyboard::update() {
         else
             m_key_states[key] = KeyState::Hold;
     };
-    for (int i = 0; i <= static_cast<int>(KeyType::Space); i++)
+    for (int i = 0; i <= static_cast<int>(KeyType::Space); i++) {
         update(static_cast<KeyType>(i));
+    }
 }
 
 KeyState Keyboard::state(KeyType key) {

@@ -5,10 +5,14 @@
   file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 ============================================================================*/
 
-#ifndef MIKAYUU_OBJECT_HP
-#define MIKAYUU_OBJECT_HP
+#ifndef MIKAYUU_OBJECT_HPP
+#define MIKAYUU_OBJECT_HPP
+
+#define GLFW_INCLUDE_GLU
+#include <GLFW/glfw3.h>
 
 #include <mikayuu/vector.hpp>
+#include <mikayuu/blend_mode.hpp>
 
 namespace mkyu {
 
@@ -18,6 +22,36 @@ struct Object {
     virtual void update() = 0;
 
     mkyu::vector3d position;
+    mkyu::BlendMode blend_mode = mkyu::BlendMode::Add;
+
+    void blend() const {
+        if (blend_mode == BlendMode::None) {
+            glDisable(GL_BLEND);
+            return;
+        }
+
+        glEnable(GL_BLEND);
+
+        switch (blend_mode) {
+        case BlendMode::None:
+            break;
+        case BlendMode::Alpha:
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            break;
+        case BlendMode::Reverse:
+            glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
+            break;
+        case BlendMode::Add:
+            glBlendFunc(GL_ONE, GL_ONE);
+            break;
+        case BlendMode::Screen:
+            glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ONE);
+            break;
+        case BlendMode::Mult:
+            glBlendFunc(GL_ZERO, GL_SRC_COLOR);
+            break;
+        }
+    }
 };
 
 }
