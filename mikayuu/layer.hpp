@@ -26,8 +26,8 @@ struct Layer {
     virtual ~Layer() = default;
 
     void draw() const {
-        m_camera.apply();
-        m_light.apply();
+        detail::apply_camera(m_camera);
+        detail::apply_light(m_light);
         for (auto const& obj : m_objects) {
             obj.second->blend();
             obj.second->draw();

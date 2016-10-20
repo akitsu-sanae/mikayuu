@@ -25,6 +25,39 @@ GLFWwindow* detail::window = nullptr;
 mkyu::vector<int, 2> detail::size = mkyu::vector<int, 2>{};
 std::unordered_map<KeyType, KeyState> Keyboard::m_key_states;
 
+void detail::apply_camera(mkyu::camera const& camera) {
+    glLoadIdentity();
+    glViewport(camera.distination[0], camera.distination[1], camera.distination[2], camera.distination[3]);
+    gluPerspective(30.0, (double)camera.distination[2] / (double)camera.distination[3], 0.1, 100.0);
+    gluLookAt(
+        camera.origin_position.x, camera.origin_position.y, camera.origin_position.z,
+        camera.target_position.x, camera.target_position.y, camera.target_position.z,
+        camera.up_direction.x, camera.up_direction.y, camera.up_direction.z
+    );
+}
+
+void detail::apply_light(mkyu::light const& light) {
+    const GLfloat pos_para[] = {
+        (GLfloat)light.position.x, (GLfloat)light.position.y, (GLfloat)light.position.z,
+        1.0
+    };
+    glLightfv(GL_LIGHT0, GL_POSITION, pos_para);
+    const GLfloat light_color_para[] = {
+        (GLfloat)light.light_color.r / 255.0,
+        (GLfloat)light.light_color.g / 255.0,
+        (GLfloat)light.light_color.b / 255.0
+    };
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_color_para);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light_color_para);
+
+    const GLfloat env_color_para[] = {
+        (GLfloat)light.env_color.r / 255.0,
+        (GLfloat)light.env_color.g / 255.0,
+        (GLfloat)light.env_color.b / 255.0
+    };
+    glLightfv(GL_LIGHT0, GL_AMBIENT, env_color_para);
+}
+
 static int convert_key(KeyType type) {
     switch (type) {
     case KeyType::A:
