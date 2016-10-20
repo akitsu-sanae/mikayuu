@@ -16,7 +16,6 @@
 
 #include <mikayuu/scene.hpp>
 #include <mikayuu/keyboard.hpp>
-#include <mikayuu/camera.hpp>
 #include <mikayuu/detail.hpp>
 
 namespace mkyu {
@@ -69,16 +68,6 @@ struct Game {
         Keyboard::update();
     }
     void draw() const {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glLoadIdentity();
-        int width, height;
-        glfwGetFramebufferSize(detail::window, &width, &height);
-        glViewport(0, 0, width, height);
-        gluPerspective(30.0, (double)width / (double)height, 1.0, 100.0);
-        m_camera.look_at();
-        static const GLfloat light_position[] = { 0.0, 3.0, 5.0, 1.0 };
-        glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
         if (m_current_scene)
             m_current_scene->draw();
         glfwSwapBuffers(detail::window);
@@ -91,8 +80,6 @@ struct Game {
 protected:
     virtual void on_update() = 0;
 private:
-    mkyu::camera m_camera;
-
     std::unique_ptr<Scene> m_current_scene = nullptr;
     std::unique_ptr<Scene> m_next_scene = nullptr;
 };

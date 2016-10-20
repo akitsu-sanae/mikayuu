@@ -24,6 +24,7 @@ struct Scene {
     virtual ~Scene() = default;
 
     void draw() const {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         for (auto const& layer : m_layers)
             layer.second->draw();
     }
