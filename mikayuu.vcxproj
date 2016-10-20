@@ -141,6 +141,7 @@
     <ClInclude Include="mikayuu\game.hpp" />
     <ClInclude Include="mikayuu\keyboard.hpp" />
     <ClInclude Include="mikayuu\layer.hpp" />
+    <ClInclude Include="mikayuu\light.hpp" />
     <ClInclude Include="mikayuu\mesh.hpp" />
     <ClInclude Include="mikayuu\object.hpp" />
     <ClInclude Include="mikayuu\scene.hpp" />

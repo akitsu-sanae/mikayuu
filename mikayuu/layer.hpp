@@ -13,6 +13,7 @@
 
 #include <mikayuu/object.hpp>
 #include <mikayuu/camera.hpp>
+#include <mikayuu/light.hpp>
 
 namespace mkyu {
 
@@ -26,8 +27,7 @@ struct Layer {
 
     void draw() const {
         m_camera.apply();
-        static const GLfloat light_position[] = { 0.0, 3.0, 5.0, 1.0 };
-        glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+        m_light.apply();
         for (auto const& obj : m_objects) {
             obj.second->blend();
             obj.second->draw();
@@ -70,14 +70,22 @@ protected:
     void add_object(std::string const& name, std::shared_ptr<Object> const& obj) {
         m_objects.insert(std::make_pair(name, obj));
     }
+
     mkyu::camera const& camera() const {
         return m_camera;
     }
     mkyu::camera& camera() {
         return m_camera;
     }
+    mkyu::light const& light() const {
+        return m_light;
+    }
+    mkyu::light& light() {
+        return m_light;
+    }
 private:
     mkyu::camera m_camera;
+    mkyu::light m_light;
     std::unordered_map<std::string, std::shared_ptr<Object>> m_objects;
     Scene const& m_scene;
 };
