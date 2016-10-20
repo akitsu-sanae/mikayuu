@@ -61,8 +61,8 @@ struct Game {
             m_current_scene->update();
 
         if (m_next_scene) {
-            m_current_scene = std::move(m_next_scene);
-            m_next_scene = nullptr;
+            m_current_scene.swap(m_next_scene);
+            m_next_scene.reset();
         }
         glfwPollEvents();
         Keyboard::update();
@@ -73,15 +73,16 @@ struct Game {
         glfwSwapBuffers(detail::window);
     }
 
-    template<typename T>
-    void change_scene(T&& scene) {
-        m_next_scene = std::make_unique<T>(std::move(scene));
+    template<typename T, typename ... Args>
+    void change_scene(Args&& ... args) {
+        std::unique_ptr<mkyu::Scene> tmp = std::make_unique<T>(std::forward<Args>(args) ...);
+        tmp.swap(m_next_scene);
     }
 protected:
     virtual void on_update() = 0;
 private:
-    std::unique_ptr<Scene> m_current_scene = nullptr;
-    std::unique_ptr<Scene> m_next_scene = nullptr;
+    std::unique_ptr<mkyu::Scene> m_current_scene = nullptr;
+    std::unique_ptr<mkyu::Scene> m_next_scene = nullptr;
 };
 
 } // namespace mkyu
