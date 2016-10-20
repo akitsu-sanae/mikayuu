@@ -10,8 +10,28 @@
 
 namespace mkyu {
 
-template<typename, int>
-struct vector;
+template<typename T, int N>
+struct vector {
+    using value_type = T;
+    static constexpr int Size = N;
+    value_type elems[N];
+
+    struct out_of_range_exception {};
+    value_type const& at(int i) const {
+        if (i < 0 || i >= Size)
+            throw out_of_range_exception{};
+        return elems[i];
+    }
+
+    value_type& at(int i) {
+        if (i < 0 || i >= Size)
+            throw out_of_range_exception{};
+        return elems[i];
+    }
+    value_type const& operator[](int i) const { return at(i); }
+    value_type& operator[](int i) { return at(i); }
+};
+
 
 
 template<typename T>
@@ -103,6 +123,9 @@ operator+(
 
 using vector2d = vector<double , 2>;
 using vector3d = vector<double, 3>;
+
+template<typename T>
+using rect = vector<T, 4>;
 
 }
 
