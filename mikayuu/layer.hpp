@@ -8,7 +8,8 @@
 #ifndef MIKAYUU_LAYER_HPP
 #define MIKAYUU_LAYER_HPP
 
-#include <unordered_map>
+#include <algorithm>
+#include <vector>
 #include <memory>
 
 #include <mikayuu/object.hpp>
@@ -29,14 +30,22 @@ struct Layer {
         detail::apply_camera(m_camera);
         detail::apply_light(m_light);
         for (auto const& obj : m_objects) {
-            obj.second->blend();
-            obj.second->draw();
+            obj->blend();
+            obj->draw();
         }
     }
     void update() {
         on_update();
         for (auto&& obj : m_objects)
-            obj.second->update();
+            obj->update();
+
+        // retain
+        auto it = std::remove_if(
+            std::begin(m_objects), std::end(m_objects),
+            [](std::unique_ptr<Object> const& obj) {
+            return !obj->is_alive();
+        });
+        m_objects.erase(it, std::end(m_objects));
     }
 
     template<typename F>
@@ -44,31 +53,19 @@ struct Layer {
         for (auto&& e : m_objects)
             f(e.second);
     }
-    template<typename F>
-    void foreach_with_name(F const& f) const {
-        for (auto&& e : m_objects)
-            f(e.first, e.second);
-    }
 
-    template<typename T = mkyu::Object>
-    T const& object(std::string const& name) const {
-        return dynamic_cast<T const&>(m_objects.find(name)->second);
-    }
-    template<typename T = mkyu::Object>
-    T& object(std::string const& name) {
-        return dynamic_cast<T&>(m_objects.find(name)->second);
-    }
-    std::vector<std::string> object_names() const {
-        std::vector<std::string> names = {};
-        names.reserve(m_objects.size());
-        for (auto const& e : m_objects)
-            names.push_back(e.first);
-        return names;
+    size_t object_size() const {
+        return m_objects.size();
     }
 protected:
     virtual void on_update() {}
-    void add_object(std::string const& name, std::shared_ptr<Object> const& obj) {
-        m_objects.insert(std::make_pair(name, obj));
+
+    template<typename T, typename ... Args>
+    T& add_object(Args&& ... args) {
+        auto obj = std::make_unique<T>(std::forward<Args>(args) ...);
+        auto& ret = *obj;
+        m_objects.push_back(std::move(obj));
+        return ret;
     }
 
     mkyu::camera const& camera() const {
@@ -86,7 +83,7 @@ protected:
 private:
     mkyu::camera m_camera;
     mkyu::light m_light;
-    std::unordered_map<std::string, std::shared_ptr<Object>> m_objects;
+    std::vector<std::unique_ptr<Object>> m_objects;
     Scene const& m_scene;
 };
 

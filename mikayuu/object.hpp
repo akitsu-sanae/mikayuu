@@ -19,6 +19,7 @@ struct Object {
     virtual ~Object() = default;
     virtual void draw() const = 0;
     virtual void update() = 0;
+    virtual bool is_alive() = 0;
 
     mkyu::vector3d position;
 
