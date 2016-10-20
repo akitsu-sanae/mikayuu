@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClInclude Include="mikayuu\camera.hpp" />
     <ClInclude Include="mikayuu\color.hpp" />
+    <ClInclude Include="mikayuu\detail.hpp" />
     <ClInclude Include="mikayuu\game.hpp" />
     <ClInclude Include="mikayuu\keyboard.hpp" />
     <ClInclude Include="mikayuu\layer.hpp" />

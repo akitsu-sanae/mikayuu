@@ -17,6 +17,7 @@
 #include <mikayuu/scene.hpp>
 #include <mikayuu/keyboard.hpp>
 #include <mikayuu/camera.hpp>
+#include <mikayuu/detail.hpp>
 
 namespace mkyu {
 
@@ -30,29 +31,29 @@ struct Game {
 
     explicit Game(mkyu::Game::Option const& option) {
         glfwInit();
-        m_window = glfwCreateWindow(
+        detail::window = glfwCreateWindow(
             option.width, option.height,
             option.title,
             nullptr, nullptr);
-        if (!m_window) {
+        detail::size.x = option.width;
+        detail::size.y = option.height;
+        if (!detail::window) {
             glfwTerminate();
             exit(1);
         }
-        glfwMakeContextCurrent(m_window);
+        glfwMakeContextCurrent(detail::window);
         glClearColor(0.0, 0.0, 0.0, 1.0);
         glEnable(GL_DEPTH_TEST);
         // glEnable(GL_CULL_FACE);
         glEnable(GL_LIGHTING);
         glEnable(GL_LIGHT0);
-
-        Keyboard::set_window(m_window);
     }
     virtual ~Game() {
         glfwTerminate();
     }
 
     bool is_alive() const {
-        return !glfwWindowShouldClose(m_window);
+        return !glfwWindowShouldClose(detail::window);
     }
     void update() {
         on_update();
@@ -71,7 +72,7 @@ struct Game {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
         int width, height;
-        glfwGetFramebufferSize(m_window, &width, &height);
+        glfwGetFramebufferSize(detail::window, &width, &height);
         glViewport(0, 0, width, height);
         gluPerspective(30.0, (double)width / (double)height, 1.0, 100.0);
         m_camera.look_at();
@@ -80,7 +81,7 @@ struct Game {
 
         if (m_current_scene)
             m_current_scene->draw();
-        glfwSwapBuffers(m_window);
+        glfwSwapBuffers(detail::window);
     }
 
     template<typename T>
@@ -90,7 +91,6 @@ struct Game {
 protected:
     virtual void on_update() = 0;
 private:
-    GLFWwindow* m_window = nullptr;
     mkyu::camera m_camera;
 
     std::unique_ptr<Scene> m_current_scene = nullptr;

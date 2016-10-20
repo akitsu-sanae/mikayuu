@@ -32,15 +32,10 @@ enum class KeyState {
 
 struct Keyboard final {
     struct unknouwn_key_exception : std::exception {};
-
-    static void set_window(GLFWwindow* win) {
-        m_window = win;
-    }
     static void update();
     static KeyState state(KeyType type);
 private:
     static std::unordered_map<KeyType, KeyState> m_key_states;
-    static GLFWwindow* m_window;
 };
 
 }

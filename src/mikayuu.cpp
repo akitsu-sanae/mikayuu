@@ -17,10 +17,12 @@
 #include <mikayuu/layer.hpp>
 #include <mikayuu/scene.hpp>
 #include <mikayuu/game.hpp>
+#include <mikayuu/detail.hpp>
 
 namespace mkyu {
 
-GLFWwindow* Keyboard::m_window;
+GLFWwindow* detail::window = nullptr;
+mkyu::vector<int, 2> detail::size = mkyu::vector<int, 2>{};
 std::unordered_map<KeyType, KeyState> Keyboard::m_key_states;
 
 static int convert_key(KeyType type) {
@@ -95,7 +97,7 @@ static int convert_key(KeyType type) {
 
 void mkyu::Keyboard::update() {
     auto update = [](KeyType key) {
-        bool is_pressed = glfwGetKey(m_window, convert_key(key)) == GLFW_PRESS;
+        bool is_pressed = glfwGetKey(detail::window, convert_key(key)) == GLFW_PRESS;
         if (!is_pressed)
             m_key_states[key] = KeyState::Release;
         else if (m_key_states[key] == KeyState::Release)
