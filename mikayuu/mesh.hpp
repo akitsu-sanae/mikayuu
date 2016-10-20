@@ -45,7 +45,6 @@ struct Mesh : public mkyu::Object {
     void draw() const override final {
         glPushMatrix();
         glTranslated(position.x, position.y, position.z);
-        blend();
         glBegin(GL_TRIANGLES);
         glColor3b(255, 255, 255);
         for (auto const& face : m_faces) {

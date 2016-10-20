@@ -12,7 +12,6 @@
 #include <GLFW/glfw3.h>
 
 #include <mikayuu/vector.hpp>
-#include <mikayuu/blend_mode.hpp>
 
 namespace mkyu {
 
@@ -22,7 +21,17 @@ struct Object {
     virtual void update() = 0;
 
     mkyu::vector3d position;
-    mkyu::BlendMode blend_mode = mkyu::BlendMode::Add;
+
+    enum class BlendMode {
+        None,
+        Alpha,
+        Reverse,
+        Add,
+        Screen,
+        Mult
+    };
+
+    BlendMode blend_mode = BlendMode::None;
 
     void blend() const {
         if (blend_mode == BlendMode::None) {

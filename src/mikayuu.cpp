@@ -12,7 +12,6 @@
 #include <mikayuu/object.hpp>
 #include <mikayuu/camera.hpp>
 #include <mikayuu/color.hpp>
-#include <mikayuu/blend_mode.hpp>
 #include <mikayuu/mesh.hpp>
 #include <mikayuu/object.hpp>
 #include <mikayuu/layer.hpp>

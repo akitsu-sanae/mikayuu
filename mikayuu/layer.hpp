@@ -24,8 +24,10 @@ struct Layer {
     virtual ~Layer() = default;
 
     void draw() const {
-        for (auto const& obj : m_objects)
+        for (auto const& obj : m_objects) {
+            obj.second->blend();
             obj.second->draw();
+        }
     }
     void update() {
         on_update();
