@@ -8,7 +8,9 @@
 #ifndef MIKAYUU_SCENE_HPP
 #define MIKAYUU_SCENE_HPP
 
+#include <algorithm>
 #include <vector>
+#include <memory>
 
 #include <mikayuu/layer.hpp>
 
@@ -17,8 +19,8 @@ namespace mkyu {
 struct Game;
 
 struct Scene {
-    explicit Scene(Game const& p) :
-        m_game(p)
+    explicit Scene(Game const& game) :
+        m_game(game)
     {}
     virtual ~Scene() = default;
 
@@ -31,6 +33,14 @@ struct Scene {
         on_update();
         for (auto&& layer : m_layers)
             layer->update();
+
+        // retain
+        auto it = std::remove_if(
+            std::begin(m_layers), std::end(m_layers),
+            [](std::unique_ptr<Layer> const& layer) {
+            return !layer->is_alive();
+        });
+        m_layers.erase(it, std::end(m_layers));
     }
 
     template<typename F>
@@ -39,11 +49,15 @@ struct Scene {
             f(e.second);
     }
 
+    size_t layer_size() const {
+        return m_layers.size();
+    }
+
     Game const& game() const {
         return m_game;
     }
 protected:
-    virtual void on_update() = 0;
+    virtual void on_update() {}
 
     template<typename T, typename ... Args>
     T& add_layer(Args&& ... args) {

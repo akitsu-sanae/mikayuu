@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 
 #include <mikayuu/vector.hpp>
+#include <mikayuu/object.hpp>
 
 namespace mkyu {
 
@@ -17,6 +18,7 @@ struct detail {
 
     static void apply_camera(mkyu::camera const&);
     static void apply_light(mkyu::light const&);
+    static void apply_object_setting(Object const&);
 };
 
 }

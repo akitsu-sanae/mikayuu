@@ -58,6 +58,35 @@ void detail::apply_light(mkyu::light const& light) {
     glLightfv(GL_LIGHT0, GL_AMBIENT, env_color_para);
 }
 
+void detail::apply_object_setting(mkyu::Object const& obj) {
+    if (obj.blend_mode == Object::BlendMode::None) {
+        glDisable(GL_BLEND);
+        return;
+    }
+
+    glEnable(GL_BLEND);
+
+    switch (obj.blend_mode) {
+    case Object::BlendMode::None:
+        break;
+    case Object::BlendMode::Alpha:
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        break;
+    case Object::BlendMode::Reverse:
+        glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
+        break;
+    case Object::BlendMode::Add:
+        glBlendFunc(GL_ONE, GL_ONE);
+        break;
+    case Object::BlendMode::Screen:
+        glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ONE);
+        break;
+    case Object::BlendMode::Mult:
+        glBlendFunc(GL_ZERO, GL_SRC_COLOR);
+        break;
+    }
+}
+
 static int convert_key(KeyType type) {
     switch (type) {
     case KeyType::A:

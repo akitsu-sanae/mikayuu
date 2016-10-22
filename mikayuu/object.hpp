@@ -12,6 +12,7 @@
 #include <GLFW/glfw3.h>
 
 #include <mikayuu/vector.hpp>
+#include <mikayuu/color.hpp>
 
 namespace mkyu {
 
@@ -33,35 +34,6 @@ struct Object {
     };
 
     BlendMode blend_mode = BlendMode::None;
-
-    void blend() const {
-        if (blend_mode == BlendMode::None) {
-            glDisable(GL_BLEND);
-            return;
-        }
-
-        glEnable(GL_BLEND);
-
-        switch (blend_mode) {
-        case BlendMode::None:
-            break;
-        case BlendMode::Alpha:
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            break;
-        case BlendMode::Reverse:
-            glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
-            break;
-        case BlendMode::Add:
-            glBlendFunc(GL_ONE, GL_ONE);
-            break;
-        case BlendMode::Screen:
-            glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ONE);
-            break;
-        case BlendMode::Mult:
-            glBlendFunc(GL_ZERO, GL_SRC_COLOR);
-            break;
-        }
-    }
 };
 
 }

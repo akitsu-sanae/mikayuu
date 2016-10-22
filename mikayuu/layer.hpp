@@ -21,8 +21,8 @@ namespace mkyu {
 struct Scene;
 
 struct Layer {
-    Layer(Scene const& p) :
-        m_scene(p)
+    explicit Layer(Scene const& scene) :
+        m_scene(scene)
     {}
     virtual ~Layer() = default;
 
@@ -30,7 +30,7 @@ struct Layer {
         detail::apply_camera(m_camera);
         detail::apply_light(m_light);
         for (auto const& obj : m_objects) {
-            obj->blend();
+            detail::apply_object_setting(*obj);
             obj->draw();
         }
     }
@@ -47,6 +47,8 @@ struct Layer {
         });
         m_objects.erase(it, std::end(m_objects));
     }
+
+    virtual bool is_alive() { return true; }
 
     template<typename F>
     void foreach(F const& f) const {
