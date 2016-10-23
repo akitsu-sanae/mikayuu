@@ -59,6 +59,12 @@ void detail::apply_light(mkyu::light const& light) {
 }
 
 void detail::apply_object_setting(mkyu::Object const& obj) {
+    std::array<GLfloat, 3> v = {{
+            static_cast<GLfloat>(obj.color.r) / 255.f,
+            static_cast<GLfloat>(obj.color.g) / 255.f,
+            static_cast<GLfloat>(obj.color.b) / 255.f,
+        }};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, v.data());
     if (obj.blend_mode == Object::BlendMode::None) {
         glDisable(GL_BLEND);
         return;

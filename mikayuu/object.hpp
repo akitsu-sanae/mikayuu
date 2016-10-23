@@ -23,6 +23,7 @@ struct Object {
     virtual bool is_alive() = 0;
 
     mkyu::vector3d position;
+    mkyu::color color = color::white();
 
     enum class BlendMode {
         None,
