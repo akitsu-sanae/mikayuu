@@ -22,6 +22,21 @@ struct color final {
     static color blue() {
         return color{ 0, 0, 255 };
     }
+    static color black() {
+        return color{ 0, 0, 0 };
+    }
+    static color white() {
+        return color{ 255, 255, 255 };
+    }
+    static color yellow() {
+        return color{ 255, 255, 0 };
+    }
+    static color cyan() {
+        return color{ 0, 255, 255 };
+    }
+    static color magenta() {
+        return color{ 255, 0, 255 };
+    }
 };
 
 }
