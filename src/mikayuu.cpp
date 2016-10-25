@@ -17,6 +17,7 @@
 #include <mikayuu/layer.hpp>
 #include <mikayuu/scene.hpp>
 #include <mikayuu/game.hpp>
+#include <mikayuu/texture.hpp>
 #include <mikayuu/detail.hpp>
 
 namespace mkyu {
