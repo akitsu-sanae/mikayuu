@@ -1,5 +1,6 @@
-# mikayuu is ...
-GLFW Lightweight Wrapper for Game.
+# mikayuu
+
+mikayuu is header-only game engine for C++.
 
 # Copyright
 Copyright (C) 2016 akitsu sanae.  

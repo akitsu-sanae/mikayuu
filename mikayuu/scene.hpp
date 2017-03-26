@@ -13,14 +13,16 @@
 #include <memory>
 
 #include <mikayuu/layer.hpp>
+#include <mikayuu/utility.hpp>
 
 namespace mkyu {
 
 struct Game;
 
 struct Scene {
-    explicit Scene(Game const& game) :
-        m_game(game)
+    explicit Scene(Game const& game, GLFWwindow const* window) :
+        m_game{game},
+        m_window{window}
     {}
     virtual ~Scene() = default;
 
@@ -46,7 +48,7 @@ struct Scene {
     template<typename F>
     void foreach(F const& f) const {
         for (auto&& e : m_layers)
-            f(e.second);
+            f(*e);
     }
 
     size_t layer_size() const {
@@ -56,19 +58,21 @@ struct Scene {
     Game const& game() const {
         return m_game;
     }
-protected:
-    virtual void on_update() {}
 
-    template<typename T, typename ... Args>
-    T& add_layer(Args&& ... args) {
-        auto layer = std::make_unique<T>(std::forward<Args>(args) ...);
-        auto& ret = *layer;
+    virtual void on_init() {}
+    virtual void on_update() {}
+protected:
+        template<typename T>
+    T& add_layer() {
+        util::ptr<Layer> layer = std::make_unique<T>(*this, m_window);
+        layer->on_init();
         m_layers.push_back(std::move(layer));
-        return ret;
+        return dynamic_cast<T&>(*m_layers.back());
     }
 private:
-    std::vector<std::unique_ptr<Layer>> m_layers;
+    util::container<mkyu::Layer> m_layers;
     Game const& m_game;
+    GLFWwindow const* m_window;
 };
 
 }

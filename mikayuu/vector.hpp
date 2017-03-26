@@ -45,6 +45,13 @@ struct vector<T, 2> {
 		x(x), y(y)
 	{}
 
+    explicit vector(std::array<value_type, 2> const& arr) :
+        x{arr[0]}, y{arr[1]}
+    {}
+    explicit vector(value_type (&arr)[2]) :
+        x{arr[0]}, y{arr[1]}
+    {}
+
     struct out_of_range_exception {};
     value_type const& at(int i) const {
         if (i == 0)
@@ -76,6 +83,12 @@ struct vector<T, 3> {
     explicit vector() = default;
     explicit vector(value_type const& x, value_type const& y, value_type const& z) :
         x(x), y(y), z(z)
+    {}
+    explicit vector(std::array<value_type, 3> const& arr) :
+        x{arr[0]}, y{arr[1]}, z{arr[2]}
+    {}
+    explicit vector(value_type (&arr)[3]) :
+        x{arr[0]}, y{arr[1]}, z{arr[2]}
     {}
 
     struct out_of_range_exception {};
@@ -121,8 +134,8 @@ operator+(
 }
 
 
-using vector2d = vector<double , 2>;
-using vector3d = vector<double, 3>;
+using vector2 = vector<float , 2>;
+using vector3 = vector<float, 3>;
 
 template<typename T>
 using rect = vector<T, 4>;

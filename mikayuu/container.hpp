@@ -10,23 +10,32 @@
 
 #include <vector>
 #include <mikayuu/object.hpp>
-#include <mikayuu/polygon.hpp>
+#include <mikayuu/utility.hpp>
 
 namespace mkyu {
 
 struct Container final : public mkyu::Object {
 
-    void add(mkyu::ptr<Object> const& obj) {
-        m_objects.push_back(obj);
+    template<typename T, typename ... Args>
+    void add(Args&& ... args) {
+        m_objects.push_back(std::make_unique<T>(std::forward<Args>(args) ...));
     }
-    void update() override  {
+    void update() override {
         for (auto&& obj: m_objects)
             obj->update();
     }
-    void draw() override const {
+    void draw() const override {
         for (auto const& e : m_objects)
             e->draw();
     }
+    bool is_alive() override {
+        for (auto const& e : m_objects) {
+            if (e->is_alive())
+                return true;
+        }
+        return false;
+    }
+
     template<typename F>
     void for_each(F const& f) const {
         for (auto&& e : m_objects)
@@ -52,7 +61,7 @@ struct Container final : public mkyu::Object {
         return m_objects.end();
     }
 private:
-    mkyu::container<mkyu::Object> m_objects;
+    util::container<mkyu::Object> m_objects;
 };
 
 }

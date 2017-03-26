@@ -3,7 +3,7 @@ CXX = clang++
 AR = ar
 CXXFLAGS = -Wall -Wextra -std=c++14 -O2
 
-INCLUDE = -I./mikayuu
+INCLUDE = -I./mikayuu -I.
 
 SRCDIR = ./src
 SRC = $(wildcard $(SRCDIR)/*.cpp)

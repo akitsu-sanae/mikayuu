@@ -1,7 +1,7 @@
 #ifndef MIKAYUU_TEXTURE_HPP
 #define MIKAYUU_TEXTURE_HPP
 
-#include <png++/png.hpp>
+// #include <png++/png.hpp>
 
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
@@ -12,6 +12,7 @@ namespace mkyu {
 
 struct texture : mkyu::Object {
     explicit texture(std::string const& filename) {
+        /*
         png::image<png::rgba_pixel> image(filename);
         glGenTextures(1, &id);
         glBindTexture(GL_TEXTURE_2D, id);
@@ -24,13 +25,14 @@ struct texture : mkyu::Object {
                 buf.push_back(pix.green);
                 buf.push_back(pix.blue);
             }
-        }
+       }
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
                      image.get_width(), image.get_height(), 0,
                      GL_RGB, GL_UNSIGNED_BYTE, buf.data());
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        */
     }
 
     void draw() const override {

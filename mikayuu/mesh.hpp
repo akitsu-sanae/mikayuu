@@ -19,41 +19,53 @@
 #include <GLFW/glfw3.h>
 
 #include <mikayuu/object.hpp>
+#include <mikayuu/utility.hpp>
 
 namespace mkyu {
 
 struct Mesh : public mkyu::Object {
-
     struct Face {
-        explicit Face(unsigned int id, std::array<unsigned int, 3> const& node_ids) :
-            id(id),
-            node_ids(node_ids)
-        {}
-        unsigned int id;
-        std::array<unsigned int, 3> node_ids;
+        std::array<GLuint, 3> node_ids;
     };
     struct Node {
-        explicit Node(unsigned int id, mkyu::vector3d const& position) :
-            id(id),
-            position(position)
-        {}
-        unsigned int id;
-        mkyu::vector3d position;
+        vector3 position;
     };
 
+    explicit Mesh(const char* filename) {
+        std::ifstream input{filename};
+        std::string line;
+        while (std::getline(input, line)) {
+            auto data = util::split(line);
+            if (data[0][0] == '#')
+                continue;
+            if (data[0] == "v") {
+                auto pos_arr = util::range<std::string>{data, 1, data.size()}
+                    .map([&](std::string const& str) {
+                        return (float)std::stod(str);
+                    }).to_array<3>();
+               auto pos = vector3{pos_arr};
+               m_nodes.push_back(Node{pos});
+                continue;
+            }
+            if (data[0] == "f") {
+                auto node_ids = util::range<std::string>{data, 1, data.size()}
+                    .map([&](std::string const& str) {
+                        return (unsigned int)std::stoul(str) - 1;
+                    }).to_array<3>();
+                m_faces.push_back(Face{node_ids});
+            }
+        }
+    }
+
     virtual ~Mesh() = default;
+
     void draw() const override final {
         glPushMatrix();
         glTranslated(position.x, position.y, position.z);
-        glBegin(GL_TRIANGLES);
-        glColor3b(255, 255, 255);
-        for (auto const& face : m_faces) {
-            for (auto const& node_id : face.node_ids) {
-                auto const& node = m_nodes.at(node_id);
-                glVertex3d(node.position.x, node.position.y, node.position.z);
-            }
-        }
-        glEnd();
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glVertexPointer(3, GL_FLOAT, 0, &m_nodes[0].position[0]);
+        glDrawElements(GL_TRIANGLES, m_faces.size() * 3, GL_UNSIGNED_INT, &m_faces[0].node_ids[0]);
+        glDisableClientState(GL_VERTEX_ARRAY);
         glPopMatrix();
     }
 
@@ -69,49 +81,9 @@ struct Mesh : public mkyu::Object {
     std::vector<mkyu::Mesh::Node> const& nodes() const {
         return m_nodes;
     }
-
-    struct mesh_loading_exception : public std::exception {
-        explicit mesh_loading_exception(std::string const& msg) :
-            message(msg)
-        {}
-        const char* what() const override {
-            return message.c_str();
-        }
-        std::string message;
-    };
-    Mesh& read_from_file(std::string const& filename) {
-        std::ifstream input(filename);
-        while (true) {
-            std::string type;
-            input >> type;
-            if (type == "nodes") {
-                size_t n_of_nodes;
-                input >> n_of_nodes;
-                for (size_t i = 0; i < n_of_nodes; i++) {
-                    mkyu::vector3d pos;
-                    input >> pos.x >> pos.y >> pos.z;
-                    m_nodes.emplace_back(i, pos);
-                }
-            } else if (type == "faces") {
-                size_t n_of_faces;
-                input >> n_of_faces;
-                m_faces.reserve(m_faces.size() + n_of_faces);
-                for (size_t i = 0; i < n_of_faces; i++) {
-                    std::array<unsigned int, 3> node_ids;
-                    input >> node_ids[0] >> node_ids[1] >> node_ids[2];
-                    m_faces.emplace_back(i, node_ids);
-                }
-            } else if (type == "end") {
-                break;
-            } else {
-                throw mesh_loading_exception{ "undefined type: " + type };
-            }
-        }
-        return *this;
-    }
 private:
-    std::vector<mkyu::Mesh::Face> m_faces;
-    std::vector<mkyu::Mesh::Node> m_nodes;
+    std::vector<Face> m_faces;
+    std::vector<Node> m_nodes;
 };
 
 }

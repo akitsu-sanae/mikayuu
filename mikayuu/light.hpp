@@ -7,7 +7,7 @@
 namespace mkyu {
 
 struct light {
-    mkyu::vector3d position;
+    mkyu::vector3 position;
     mkyu::color light_color;
     mkyu::color env_color;
 };
