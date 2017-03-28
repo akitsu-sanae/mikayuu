@@ -11,6 +11,8 @@
 #include <memory>
 #include <iostream>
 
+#include <GL/glew.h>
+#include <GL/glext.h>
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 
@@ -67,6 +69,7 @@ struct Game {
             m_next_scene.reset();
         }
         glfwPollEvents();
+        glewInit();
         m_keyboard->update();
     }
     void draw() const {

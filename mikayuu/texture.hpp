@@ -1,5 +1,14 @@
+/*============================================================================
+  Copyright (C) 2016 akitsu sanae
+  https://github.com/akitsu-sanae/gureyuu
+  Distributed under the Boost Software License, Version 1.0. (See accompanying
+  file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
+============================================================================*/
+
 #ifndef MIKAYUU_TEXTURE_HPP
 #define MIKAYUU_TEXTURE_HPP
+
+#include <fstream>
 
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
@@ -50,6 +59,10 @@ struct Texture : mkyu::Object {
         glGenTextures(1, &m_id);
 
         std::ifstream input(filename, std::ios::binary);
+        if (!input) {
+            std::cerr << "can not open file: " << filename  << std::endl;
+            std::exit(-1);
+        }
         const size_t filesize = static_cast<size_t>(input.seekg(0, input.end).tellg());
         input.seekg(0, input.beg);
         std::vector<char> buffer;
@@ -68,10 +81,10 @@ struct Texture : mkyu::Object {
 
     void draw() const override {
         float vertex_position[] = {
-            0.5f, 0.5f,
-            -0.5f, 0.5f,
-            -0.5f, -0.5f,
-            0.5f, -0.5f
+            position[0] + size[0]/2.f, position[1] + size[1]/2.f,
+            position[0] - size[0]/2.f, position[1] + size[1]/2.f,
+            position[0] - size[0]/2.f, position[1] - size[1]/2.f,
+            position[0] + size[0]/2.f, position[1] - size[1]/2.f
         };
         const GLfloat uv[] = {
             1, 0,
@@ -79,6 +92,7 @@ struct Texture : mkyu::Object {
             0, 1,
             1, 1
         };
+        static auto program_id = detail::create_shader();
         int position_location = glGetAttribLocation(program_id, "position");
         int uv_location = glGetAttribLocation(program_id, "uv");
         int texture_location = glGetUniformLocation(program_id, "texture");
@@ -95,8 +109,10 @@ struct Texture : mkyu::Object {
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     }
 
-    void update() override {}
     bool is_alive() override { return true; }
+
+protected:
+    vector2 size;
 private:
     GLuint m_id;
 };
