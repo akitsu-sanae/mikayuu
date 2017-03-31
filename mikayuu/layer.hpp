@@ -9,7 +9,7 @@
 #define MIKAYUU_LAYER_HPP
 
 #include <algorithm>
-#include <vector>
+#include <map>
 #include <memory>
 
 #include <mikayuu/object.hpp>
@@ -34,22 +34,21 @@ struct Layer {
         apply_camera();
         apply_light();
         for (auto const& obj : m_objects) {
-            apply_object_setting(*obj);
-            obj->draw();
+            apply_object_setting(*obj.second);
+            obj.second->draw();
         }
     }
     void update() {
         on_update();
         for (auto&& obj : m_objects)
-            obj->update();
+            obj.second->update();
 
-        // retain
-        auto it = std::remove_if(
-            std::begin(m_objects), std::end(m_objects),
-            [](std::unique_ptr<Object> const& obj) {
-            return !obj->is_alive();
-        });
-        m_objects.erase(it, std::end(m_objects));
+        for (auto it=m_objects.begin(); it!=m_objects.end();) {
+            if (!it->second->is_alive())
+                m_objects.erase(it++);
+            else
+                it++;
+        }
     }
 
     virtual bool is_alive() { return true; }
@@ -57,7 +56,7 @@ struct Layer {
     template<typename F>
     void foreach(F const& f) const {
         for (auto&& e : m_objects)
-            f(*e);
+            f(*e.second);
     }
 
     size_t object_size() const {
@@ -68,12 +67,18 @@ struct Layer {
     virtual void on_update() {}
 protected:
     template<typename T, typename ... Args>
-        T& add_object(Args&& ... args) {
+    void add_object(std::string const& name, Args&& ... args) {
         auto obj = std::make_unique<T>(std::forward<Args>(args) ...);
-        auto& ret = *obj;
-        m_objects.push_back(std::move(obj));
-        return ret;
+        m_objects.emplace(std::piecewise_construct, std::make_tuple(name), std::make_tuple(std::move(obj)));
     }
+    template<typename T=Object>
+    T& find_object(std::string const& name) {
+        auto const& found = m_objects.find(name);
+        if (found == m_objects.end())
+            throw std::logic_error{"unbound object: " + name};
+        return dynamic_cast<T&>(*(*found).second);
+    }
+
 
     mkyu::camera const& camera() const {
         return m_camera;
@@ -93,7 +98,7 @@ protected:
 private:
     mkyu::camera m_camera;
     mkyu::light m_light;
-    util::container<Object> m_objects;
+    std::map<std::string, util::ptr<Object>> m_objects;
     Scene const& m_scene;
     GLFWwindow const* m_window;
 
